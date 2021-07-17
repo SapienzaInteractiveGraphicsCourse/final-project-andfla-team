@@ -1,0 +1,11 @@
+Model Information:
+* title:	Mira up
+* source:	https://sketchfab.com/3d-models/mira-up-375d61812555491396d48f6cd64568e2
+* author:	Korpusenko (https://sketchfab.com/Korpusenko)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Mira up" (https://sketchfab.com/3d-models/mira-up-375d61812555491396d48f6cd64568e2) by Korpusenko (https://sketchfab.com/Korpusenko) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
