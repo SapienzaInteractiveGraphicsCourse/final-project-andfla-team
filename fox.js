@@ -9,7 +9,7 @@ let jumping;
 let gravityFall;
 let isFalling = false;
 let simpleJumpValue = 5;
-let simpleFallValue = 5;
+let simpleFallValue = 15;
 
 const fox_dic = {
     Root: "b_Root_00",

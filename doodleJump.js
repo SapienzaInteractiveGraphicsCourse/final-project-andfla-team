@@ -3,6 +3,8 @@ import {GLTFLoader} from "./lib/three.js-master/examples/jsm/loaders/GLTFLoader.
 import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/controls/OrbitControls.js';
 
 import * as FOX from "./fox.js";
+import {platform, platforms} from './platform.js';
+import * as UTILS from './utils.js';
 
 const manager = new THREE.LoadingManager();
 const scene = new THREE.Scene();
@@ -12,40 +14,39 @@ var foxInitialPosition = {
     y: -1,
     z: 0.5,
 };
-var foxCurrentPosition = {
-    x: 0,
-    y: -1,
-    z: 0.5,
-};
+var height_viewable = 20;
+var width_viewable = 18;    // [-18, +18]
+var platformID;
 
 // Camera parameters
 const camera = {
     obj: null,
-
+    
+    visible_height: 0,
+    visible_width: 0,
+    
     // Initializes the camera and adds it to the scene
     init: function(scene) {
+        const z = 20;
         const fov = 75;
         const aspect = window.innerWidth / window.innerHeight;
         const near = 0.1;
         const far = 100;
         const center_value = 10;
         this.obj = new THREE.PerspectiveCamera(fov, aspect, near, far);
-        this.obj.position.set(0, center_value, 20);
-
+        this.obj.position.set(0, center_value, z);
         this.obj.lookAt(0, center_value, 0);
+        
+        this.visible_height = UTILS.visibleHeightAtZDepth(z, this.obj);
+        this.visible_width = UTILS.visibleWidthAtZDepth(z, this.obj);
+        
         scene.add(this.obj);
-    },
-
-    // Updates the camera matrices
-    update: function() {
-        this.obj.updateMatrix();
-        this.obj.updateMatrixWorld();
     },
 
     // Moves the camera up by y points
     up: function(y) {
         const upAnimation = new TWEEN.Tween(this.obj.position) 
-            .to({y: 40+y}, 1000) 
+            .to({y: y}, 1000) 
             .easing(TWEEN.Easing.Quadratic.Out)
             .start();
     }
@@ -277,9 +278,9 @@ const loader = {
         var texture = loader.load( this.assets.textures.wall, function ( texture ) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
-            texture.repeat.set( 3, 3 );
+            texture.repeat.set( 10, 10 );
 
-            const geometry = new THREE.PlaneGeometry( 100, 100 );
+            const geometry = new THREE.PlaneGeometry( 100, 100000 );
             geometry.translate( 0, 0, -2.1);
             
             var wallMaterial = new THREE.MeshBasicMaterial({
@@ -312,26 +313,32 @@ const loader = {
     },
     
     loadPlatform: function(scene) {
-        let platforms = [];
-        let numPlatforms = 5;
-        let space = 5;
-        let platformMaterial1;
-        var loader = new THREE.TextureLoader();
-        
-        // TODO: sistemare la creazione delle piattaforme, aggiungere aggiunta casuale
-        for(var i=0; i < numPlatforms; i++)
-        {
-            var geometry = new THREE.BoxGeometry(6, 0.5, 4);
-            geometry.translate( i*2, space + 4*i, 0);
-            
-            platformMaterial1 = new THREE.MeshBasicMaterial({
-                color: 0x00ff00
-            });
-            
-            platforms[i] = new THREE.Mesh(geometry, platformMaterial1);
-            scene.add(platforms[i]);
+        // Load firsts platforms
+        for (platformID = 0; platformID < platforms.number; platformID++) {
+            drawPlatform(platformID);
         }
     },
+}
+
+function drawPlatform(platformID) {
+    var space = 5;
+    var platformMaterial1;
+    var plat;
+    
+    var loader = new THREE.TextureLoader();
+
+    platform.generate(3*platformID + height_viewable/platforms.number);
+    platforms.obj.push(platform);
+    
+    var geometry = new THREE.BoxGeometry(6, 0.5, 4);
+    geometry.translate( platform.x, platform.y, platform.z);
+    
+    platformMaterial1 = new THREE.MeshBasicMaterial({
+        color: 0x00ff00
+    });
+        
+    plat = new THREE.Mesh(geometry, platformMaterial1);
+    scene.add(plat);
 }
 
 const inputControls = {
@@ -345,7 +352,6 @@ const inputControls = {
     keyDown: function (e) {
         if (e.keyCode == '37') {
             inputControls.isMoving = -1;
-            console.log("Imposto  a -1 "+inputControls.isMoving);
         }
         else if (e.keyCode == '39') {
             inputControls.isMoving = 1;
@@ -361,7 +367,6 @@ const inputControls = {
     keyUp: function (e) {
         if (e.keyCode == '37' || e.keyCode == '39') {
             inputControls.isMoving = 0;
-            console.log("Reimposto a 0 "+inputControls.isMoving);
         }
     },
 }
@@ -384,17 +389,13 @@ function start() {
 
     document.body.appendChild(canvas);
 
-    // Init of the scene
-    console.log(canvas.height);
-    
     // keyboard event listeners
     inputControls.init();
     document.onkeydown = inputControls.keyDown;
-    //document.onkeypress = inputControls.keyDown;
     document.onkeyup = inputControls.keyUp;
     
+    // Init of the scene
     camera.init(scene);
-    //frustum.init();
     lights.init(scene);
     backgroundAndFog.init(scene);
     
@@ -403,14 +404,9 @@ function start() {
     controls.target.set(0, 5, 0);
     controls.update();
     */
-    
     const axesHelper = new THREE.AxesHelper( 5 );
     axesHelper.setColors( new THREE.Color("rgb(255, 0, 0)"),  new THREE.Color("rgb(0, 255, 0)"),  new THREE.Color("rgb(0, 0, 255)"))
     scene.add( axesHelper );
-    
-    console.log(loader.loaded);
-    //renderer.render(scene, camera.obj);
-    
     
     let isFalling = false;
     let i = 0.1;
@@ -424,19 +420,14 @@ function start() {
         
         TWEEN.update(time);
         
-        console.log(fox.position.y);
-        if(fox.position.y + 1 == 0)
+        // Initial jump
+        if(fox.position.y + 1 <= 0)
             FOX.jump(fox);
         
         // Animation and movement
         if(inputControls.isMoving == -1) {
             // Left
-            /*foxCurrentPosition.x -= i
-            fox.position.set(foxCurrentPosition.x, foxInitialPosition.y, foxInitialPosition.z);
-            */
-            console.log("Old x :" +fox.position.x);
             FOX.moveLeft(fox);
-            console.log("Updates x :" +fox.position.x);
         } else if (inputControls.isMoving == 1) {
             // Right
             FOX.moveRight(fox);
@@ -450,20 +441,15 @@ function start() {
             inputControls.isMoving = 0;
         }
         
-        /*let isColliding = false;
+        console.log("X: "+fox.position.x);
         
-        // TODO: caduta+salto DA FARE
-        if (isFalling) {
-            FOX.fall(fox);
-            console.log("ora cado");
-        } else if(isColliding) {
-            FOX.jump(fox);
+        // Move camera if the fox pass half of the screen and generate new platform
+        let simpleJumpValue = 5;
+        if(fox.position.y >= camera.obj.position.y) {
+            camera.up(simpleJumpValue + fox.position.y);
+            platformID++;
+            drawPlatform(platformID);
         }
-        
-        if (fox.position.y == foxInitialPosition.y) {
-            FOX.jump(fox);
-        }*/
-        
         requestAnimationFrame(animate);
         render();
     };
