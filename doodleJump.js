@@ -424,6 +424,10 @@ function start() {
         
         TWEEN.update(time);
         
+        console.log(fox.position.y);
+        if(fox.position.y + 1 == 0)
+            FOX.jump(fox);
+        
         // Animation and movement
         if(inputControls.isMoving == -1) {
             // Left
