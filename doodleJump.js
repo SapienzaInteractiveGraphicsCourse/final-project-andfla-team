@@ -17,14 +17,15 @@ var foxInitialPosition = {
 var height_viewable = 20;
 var width_viewable = 18;    // [-18, +18]
 var platformID;
+var firstJumpVar = true;
 
 // Camera parameters
 const camera = {
     obj: null,
-    
+
     visible_height: 0,
     visible_width: 0,
-    
+
     // Initializes the camera and adds it to the scene
     init: function(scene) {
         const z = 20;
@@ -36,17 +37,17 @@ const camera = {
         this.obj = new THREE.PerspectiveCamera(fov, aspect, near, far);
         this.obj.position.set(0, center_value, z);
         this.obj.lookAt(0, center_value, 0);
-        
+
         this.visible_height = UTILS.visibleHeightAtZDepth(z, this.obj);
         this.visible_width = UTILS.visibleWidthAtZDepth(z, this.obj);
-        
+
         scene.add(this.obj);
     },
 
     // Moves the camera up by y points
     up: function(y) {
-        const upAnimation = new TWEEN.Tween(this.obj.position) 
-            .to({y: y}, 1000) 
+        const upAnimation = new TWEEN.Tween(this.obj.position)
+            .to({y: y}, 1000)
             .easing(TWEEN.Easing.Quadratic.Out)
             .start();
     }
@@ -75,15 +76,15 @@ const lights = {
 
     // Initializes the lights
     init: function(scene) {
-        
+
         this.ambientLight = new THREE.HemisphereLight(this.skyColor, this.groundColor, 1.0);
         //scene.add(this.ambientLight);
-    
+
         const color = 0xFFFFFF;
         const light = new THREE.DirectionalLight(color, 1.0);
         light.position.set(0, 6, 15);
         scene.add(light);
-        
+
         const helper = new THREE.DirectionalLightHelper(light, 5);
         scene.add(helper);
     },
@@ -95,7 +96,7 @@ const lights = {
                 .lerp(new THREE.Color(0 ,0, 0), (camera.obj.position.y-500)/500);
             const newGroundColor = new THREE.Color(this.groundColor)
                 .lerp(new THREE.Color(0 ,0, 0), (camera.obj.position.y-500)/500);
-                
+
             if (newSkyColor.r<0) newSkyColor.r = 0;
             if (newSkyColor.g<0) newSkyColor.g = 0;
             if (newSkyColor.b<0) newSkyColor.b = 0;
@@ -121,14 +122,14 @@ const backgroundAndFog = {
     update: function(scene) {
         if (camera.obj.position.y>500) {
             const newColor = new THREE.Color(this.color).lerp(new THREE.Color(0 ,0, 0), (camera.obj.position.y-500)/500);
-            
+
             if (newColor.r<0) newColor.r = 0;
             if (newColor.g<0) newColor.g = 0;
             if (newColor.b<0) newColor.b = 0;
 
             scene.background = newColor;
             scene.fog.color = scene.background;
-        } 
+        }
     }
 }
 
@@ -171,8 +172,8 @@ const cube = {
         material.color = new THREE.Color(0xff0000);
         material.metalness = 0.7;
         material.roughness = 0.1;
-        
-        
+
+
         this.obj = new THREE.Mesh( geometry, material );
         scene.add( this.obj );
     }
@@ -199,16 +200,16 @@ const loader = {
         const text = document.createElement("h");
         text.innerText = "Loading...";
         document.body.appendChild(text);
-        
+
         var gltfLoader = new GLTFLoader(manager);
-        
+
         // TODO: aggiustare posizione e scaling
         gltfLoader.load(this.assets.objects.foxGltf, (gltf) => {
             fox = gltf.scene;
             fox.name = "fox";
             fox.position.set(foxInitialPosition.x, foxInitialPosition.y, foxInitialPosition.z);
             fox.scale.set(0.05, 0.05, 0.1);
-            
+
             fox.traverse(function (child) {
               if (child instanceof THREE.Mesh) {
                 child.castShadow = true;
@@ -219,43 +220,44 @@ const loader = {
             fox.receiveShadow = true;
 
             // Torso
-            var root = fox.getObjectByName(FOX.fox_dic.Root);
-            var hip = fox.getObjectByName(FOX.fox_dic.Hip);
-            var spine1 = fox.getObjectByName(FOX.fox_dic.Spine1);
-            var spine2 = fox.getObjectByName(FOX.fox_dic.Spine2);
-            var neck = fox.getObjectByName(FOX.fox_dic.Neck);
-            var head = fox.getObjectByName(FOX.fox_dic.Head);
-            
+            root = fox.getObjectByName(FOX.fox_dic.Root);
+            hip = fox.getObjectByName(FOX.fox_dic.Hip);
+            spine1 = fox.getObjectByName(FOX.fox_dic.Spine1);
+            spine2 = fox.getObjectByName(FOX.fox_dic.Spine2);
+            neck = fox.getObjectByName(FOX.fox_dic.Neck);
+            head = fox.getObjectByName(FOX.fox_dic.Head);
+
             // Front legs
-            var rightUpperArm = fox.getObjectByName(FOX.fox_dic.RightUpperArm);
-            var rightForeArm = fox.getObjectByName(FOX.fox_dic.RightForeArm);
-            var rightHand = fox.getObjectByName(FOX.fox_dic.RightHand);
-            var leftUpperArm = fox.getObjectByName(FOX.fox_dic.LeftUpperArm);
-            var leftForeArm = fox.getObjectByName(FOX.fox_dic.LeftForeArm);
-            var leftHand = fox.getObjectByName(FOX.fox_dic.LeftHand);
-            
+            rightUpperArm = fox.getObjectByName(FOX.fox_dic.RightUpperArm);
+            rightForeArm = fox.getObjectByName(FOX.fox_dic.RightForeArm);
+            rightHand = fox.getObjectByName(FOX.fox_dic.RightHand);
+            leftUpperArm = fox.getObjectByName(FOX.fox_dic.LeftUpperArm);
+            leftForeArm = fox.getObjectByName(FOX.fox_dic.LeftForeArm);
+            leftHand = fox.getObjectByName(FOX.fox_dic.LeftHand);
+
             // Back legs
-            var leftLeg1 = fox.getObjectByName(FOX.fox_dic.LeftLeg1);
-            var leftLeg2 = fox.getObjectByName(FOX.fox_dic.LeftLeg2);
-            var leftFoot1 = fox.getObjectByName(FOX.fox_dic.LeftFoot1);
-            var leftFoot2 = fox.getObjectByName(FOX.fox_dic.LeftFoot2);
-            var rightLeg1 = fox.getObjectByName(FOX.fox_dic.RightLeg1);
-            var rightLeg2 = fox.getObjectByName(FOX.fox_dic.RightLeg2);
-            var rightFoot1 = fox.getObjectByName(FOX.fox_dic.RightFoot1);
-            var rightFoot2 = fox.getObjectByName(FOX.fox_dic.RightFoot2);
-            
+            leftLeg1 = fox.getObjectByName(FOX.fox_dic.LeftLeg1);
+            leftLeg2 = fox.getObjectByName(FOX.fox_dic.LeftLeg2);
+            leftFoot1 = fox.getObjectByName(FOX.fox_dic.LeftFoot1);
+            leftFoot2 = fox.getObjectByName(FOX.fox_dic.LeftFoot2);
+            rightLeg1 = fox.getObjectByName(FOX.fox_dic.RightLeg1);
+            rightLeg2 = fox.getObjectByName(FOX.fox_dic.RightLeg2);
+            rightFoot1 = fox.getObjectByName(FOX.fox_dic.RightFoot1);
+            rightFoot2 = fox.getObjectByName(FOX.fox_dic.RightFoot2);
+
             // Tail
-            var tail1 = fox.getObjectByName(FOX.fox_dic.Tail1);
-            var tail2 = fox.getObjectByName(FOX.fox_dic.Tail2);
-            var tail3 = fox.getObjectByName(FOX.fox_dic.Tail3);
-            
+            tail1 = fox.getObjectByName(FOX.fox_dic.Tail1);
+            tail2 = fox.getObjectByName(FOX.fox_dic.Tail2);
+            tail3 = fox.getObjectByName(FOX.fox_dic.Tail3);
+
             // TODO: controllare se hanno bisogno di rotazioni, aggiungere la coda
             //rightUpperArm.rotation.z = (0 * Math.PI) / 180;
             //leftUpperArm.rotation.z = (45 * Math.PI) / 180;
             root.rotation.z = (90 * Math.PI) / 180;
-            
+            root.rotation.y = (-3.5 * Math.PI) / 180;
+
             //dirLight.target = fox;
-            
+
             scene.add(fox);
         },
             (xhr) => {
@@ -265,7 +267,7 @@ const loader = {
                 console.log(error);
             }
         );
-        
+
         manager.onLoad = function() {
             this.loaded = true;
             loader.onLoad();
@@ -282,16 +284,16 @@ const loader = {
 
             const geometry = new THREE.PlaneGeometry( 100, 100000 );
             geometry.translate( 0, 0, -2.1);
-            
+
             var wallMaterial = new THREE.MeshBasicMaterial({
                 map: texture
             });
             var wall = new THREE.Mesh(geometry, wallMaterial);
             scene.add(wall);
         } );
-        
+
     },
-    
+
     loadGround: function(scene) {
         var loader = new THREE.TextureLoader();
 
@@ -301,17 +303,17 @@ const loader = {
             texture.repeat.set( 9, 9 );
 
             const geometry = new THREE.PlaneGeometry( window.innerWidth / 2, window.innerHeight );
-            
+
             var groundMaterial = new THREE.MeshBasicMaterial({
                 map: texture
             });
             var ground = new THREE.Mesh(geometry, groundMaterial);
             ground.rotation.x = (-90 * Math.PI) / 180;
-            
+
             scene.add(ground);
         } );
     },
-    
+
     loadPlatform: function(scene) {
         // Load firsts platforms
         for (platformID = 0; platformID < platforms.number; platformID++) {
@@ -324,30 +326,114 @@ function drawPlatform(platformID) {
     var space = 5;
     var platformMaterial1;
     var plat;
-    
+
     var loader = new THREE.TextureLoader();
 
     platform.generate(3*platformID + height_viewable/platforms.number);
     platforms.obj.push(platform);
-    
+
     var geometry = new THREE.BoxGeometry(6, 0.5, 4);
     geometry.translate( platform.x, platform.y, platform.z);
-    
+
     platformMaterial1 = new THREE.MeshBasicMaterial({
         color: 0x00ff00
     });
-        
+
     plat = new THREE.Mesh(geometry, platformMaterial1);
     scene.add(plat);
 }
 
 const inputControls = {
     isMoving: 0,        // 0 not moving, 1 right, -1 left
+    isRightFacing: true,
+    keyboard:true,
+
+    // Initializes the controls listeners
+    init: function() {
+        this.isMoving = 0;//unused
+        this.isRightFacing = true;
+        this.keyboard = true;
+        //console.log("INIT: This.isRight Facing : "+ this.isRightFacing);
+
+    },
+    keyDown: function (e) {
+        //console.log("KEYDOWN: This.isRight Facing : " + inputControls.isRightFacing);
+        //groupLeft.removeAll();
+        //groupRight.removeAll();
+        //groupJumping.removeAll();
+        //groupFalling.removeAll();
+        //groupRotating.removeAll();
+
+        if (e.keyCode == '37' && inputControls.keyboard==true) {
+
+            if (inputControls.isRightFacing){
+            //  console.log("Dovrei ruotare verso sinistra");
+              groupRight.removeAll();
+              groupRotating.removeAll();
+              FOX.rotateBody(fox, "left");
+              inputControls.isRightFacing = false;
+              //console.log("LEFT ROTATED: This.isRight Facing : "+ inputControls.isRightFacing);
+            }
+            inputControls.isMoving = -1;
+            FOX.moveLeft(fox);
+            //console.log("Imposto  a -1 "+ inputControls.isMoving);
+        }
+
+        else if (e.keyCode == '39' && inputControls.keyboard==true) {
+          if (!inputControls.isRightFacing){
+            //console.log("Should rotate towards right");
+            groupLeft.removeAll();
+            groupRotating.removeAll();
+            FOX.rotateBody(fox, "right");
+            inputControls.isRightFacing = true;
+          //  console.log("RIGHT ROTATED: This.isRight Facing : "+ inputControls.isRightFacing);
+          }
+            inputControls.isMoving = 1;
+            FOX.moveRight(fox);
+         }
+        else if (e.keyCode == '38' && inputControls.keyboard==true) {
+            // Top
+            inputControls.isMoving = 0;
+            groupJumping.removeAll();
+            groupLeft.removeAll();
+            groupRight.removeAll();
+            groupRotating.removeAll();
+
+            FOX.jump(fox);
+         }
+        /* freccia giù = game over (colpito nemico),
+          la volpe cade e la tasiera è bloccata*/
+        else if (e.keyCode == '40') {
+            // Down
+            groupJumping.removeAll();
+            groupLeft.removeAll();
+            groupRight.removeAll();
+            groupRotating.removeAll();
+            FOX.fall(fox);
+            inputControls.isMoving = 0;
+            inputControls.keyboard = false;
+        }
+    },
+
+    keyUp: function (e) {
+        if (e.keyCode == '37' || e.keyCode == '39') {
+            inputControls.isMoving = 0;
+            groupLeft.removeAll();
+            groupRight.removeAll();
+            //console.log("Reimposto a 0 "+inputControls.isMoving);
+        }
+    },
+}
+
+//Old
+/*
+const inputControls = {
+    isMoving: 0,        // 0 not moving, 1 right, -1 left
 
     // Initializes the controls listeners
     init: function() {
         this.isMoving = 0;
-        
+
     },
     keyDown: function (e) {
         if (e.keyCode == '37') {
@@ -363,14 +449,14 @@ const inputControls = {
             inputControls.isMoving = 3;
         }
     },
-    
+
     keyUp: function (e) {
         if (e.keyCode == '37' || e.keyCode == '39') {
             inputControls.isMoving = 0;
         }
     },
 }
-
+*/
 // Start the game
 function start() {
     // Clear web page
@@ -381,7 +467,7 @@ function start() {
     const canvas = document.createElement("canvas");
     canvas.setAttribute("id", "canvasID");
     const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
-    
+
     renderer.setSize(window.innerWidth / 2, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.shadowMap.enabled = true;
@@ -393,12 +479,12 @@ function start() {
     inputControls.init();
     document.onkeydown = inputControls.keyDown;
     document.onkeyup = inputControls.keyUp;
-    
+
     // Init of the scene
     camera.init(scene);
     lights.init(scene);
     backgroundAndFog.init(scene);
-    
+
     /*
     const controls = new OrbitControls(camera.obj, canvas);
     controls.target.set(0, 5, 0);
@@ -407,23 +493,61 @@ function start() {
     const axesHelper = new THREE.AxesHelper( 5 );
     axesHelper.setColors( new THREE.Color("rgb(255, 0, 0)"),  new THREE.Color("rgb(0, 255, 0)"),  new THREE.Color("rgb(0, 0, 255)"))
     scene.add( axesHelper );
-    
+
     let isFalling = false;
     let i = 0.1;
 
+    var animate = function (time) {
+            // Resizes the canvas if the window size is changed
+            if (resizeRendererToDisplaySize(renderer)) {
+                camera.obj.aspect = canvas.clientWidth / canvas.clientHeight;
+                camera.obj.updateProjectionMatrix();
+            }
+            TWEEN.update(time);
+            // Initial jump
+            if(fox.position.y + 1 <= 0 && firstJumpVar == true){
+                FOX.jump(fox);
+                console.log("first jump");
+                firstJumpVar = false;
+            }
+
+
+          //  Update animations
+            groupLeft.update();
+            groupRight.update();
+            groupJumping.update();
+            groupRotating.update();
+            groupFalling.update();
+
+            // Move camera if the fox pass half of the screen and generate new platform
+            let simpleJumpValue = 5;
+            if(fox.position.y >= camera.obj.position.y) {
+
+                camera.up(simpleJumpValue + fox.position.y);
+                platformID++;
+                drawPlatform(platformID);
+            }
+
+
+            requestAnimationFrame(animate);
+            render();
+        };
+
+    //old
+/*
     var animate = function (time) {
         // Resizes the canvas if the window size is changed
         if (resizeRendererToDisplaySize(renderer)) {
             camera.obj.aspect = canvas.clientWidth / canvas.clientHeight;
             camera.obj.updateProjectionMatrix();
         }
-        
+
         TWEEN.update(time);
-        
+
         // Initial jump
         if(fox.position.y + 1 <= 0)
             FOX.jump(fox);
-        
+
         // Animation and movement
         if(inputControls.isMoving == -1) {
             // Left
@@ -440,9 +564,9 @@ function start() {
             FOX.fall(fox);
             inputControls.isMoving = 0;
         }
-        
+
         console.log("X: "+fox.position.x);
-        
+
         // Move camera if the fox pass half of the screen and generate new platform
         let simpleJumpValue = 5;
         if(fox.position.y >= camera.obj.position.y) {
@@ -453,18 +577,18 @@ function start() {
         requestAnimationFrame(animate);
         render();
     };
-    
+*/
     function render() {
         renderer.render(scene, camera.obj);
     }
-    
+
     animate();
 }
 
 function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
     let pixelRatio = 1;
-    
+
     const width  = canvas.clientWidth  * pixelRatio | 0;
     const height = canvas.clientHeight * pixelRatio | 0;
     const needResize = canvas.width !== width || canvas.height !== height;
