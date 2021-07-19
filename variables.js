@@ -1,3 +1,4 @@
+const scene  = new Physijs.Scene();
 
 var root;
 var hip;
@@ -33,3 +34,6 @@ var groupRight;
 var groupJumping;
 var groupRotating;
 var groupFalling;
+
+var box;
+var foxBox;

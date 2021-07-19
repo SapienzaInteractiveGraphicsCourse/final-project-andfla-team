@@ -3,19 +3,21 @@ import {GLTFLoader} from "./lib/three.js-master/examples/jsm/loaders/GLTFLoader.
 import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/controls/OrbitControls.js';
 
 import * as FOX from "./fox.js";
+import * as PLATFORM from "./platform.js";
 import {platform, platforms} from './platform.js';
 import * as UTILS from './utils.js';
 
+Physijs.scripts.worker = "./lib/physijs_worker.js";
+Physijs.scripts.ammo = "./ammo.js";
+
 const manager = new THREE.LoadingManager();
-const scene = new THREE.Scene();
+
 var fox;
 var foxInitialPosition = {
     x: 0,
     y: -1,
     z: 0.5,
 };
-var height_viewable = 20;
-var width_viewable = 18;    // [-18, +18]
 var platformID;
 var firstJumpVar = true;
 
@@ -38,8 +40,8 @@ const camera = {
         this.obj.position.set(0, center_value, z);
         this.obj.lookAt(0, center_value, 0);
 
-        this.visible_height = UTILS.visibleHeightAtZDepth(z, this.obj);
-        this.visible_width = UTILS.visibleWidthAtZDepth(z, this.obj);
+        this.visible_height = UTILS.visibleHeightAtZDepth(0, this.obj);
+        this.visible_width = UTILS.visibleWidthAtZDepth(0, this.obj);
 
         scene.add(this.obj);
     },
@@ -88,26 +90,6 @@ const lights = {
         const helper = new THREE.DirectionalLightHelper(light, 5);
         scene.add(helper);
     },
-
-    // Updates the lights colours
-    update: function() {
-        if (camera.obj.position.y>500) {
-            const newSkyColor = new THREE.Color(this.skyColor)
-                .lerp(new THREE.Color(0 ,0, 0), (camera.obj.position.y-500)/500);
-            const newGroundColor = new THREE.Color(this.groundColor)
-                .lerp(new THREE.Color(0 ,0, 0), (camera.obj.position.y-500)/500);
-
-            if (newSkyColor.r<0) newSkyColor.r = 0;
-            if (newSkyColor.g<0) newSkyColor.g = 0;
-            if (newSkyColor.b<0) newSkyColor.b = 0;
-            if (newGroundColor.r<0) newGroundColor.r = 0;
-            if (newGroundColor.g<0) newGroundColor.g = 0;
-            if (newGroundColor.b<0) newGroundColor.b = 0;
-
-            this.ambientLight.color = newSkyColor;
-            this.ambientLight.groundColor = newGroundColor;
-        }
-    }
 }
 
 // Background
@@ -259,6 +241,8 @@ const loader = {
             //dirLight.target = fox;
 
             scene.add(fox);
+            FOX.collisionListener(fox);
+            FOX.changeBoxPosition(fox);
         },
             (xhr) => {
                 console.log((xhr.loaded / xhr.total * 100) + '% loaded')
@@ -318,29 +302,24 @@ const loader = {
         // Load firsts platforms
         for (platformID = 0; platformID < platforms.number; platformID++) {
             drawPlatform(platformID);
+            //handleCollision(platform);
         }
     },
 }
 
+
 function drawPlatform(platformID) {
-    var space = 5;
     var platformMaterial1;
-    var plat;
 
     var loader = new THREE.TextureLoader();
 
-    platform.generate(3*platformID + height_viewable/platforms.number);
+    platform.ID = platformID;
+    platform.generate(camera.visible_width/4, 20);
+    
+    //platform.generate(camera.visible_width, 3*platformID + camera.visible_height/platforms.number);
     platforms.obj.push(platform);
-
-    var geometry = new THREE.BoxGeometry(6, 0.5, 4);
-    geometry.translate( platform.x, platform.y, platform.z);
-
-    platformMaterial1 = new THREE.MeshBasicMaterial({
-        color: 0x00ff00
-    });
-
-    plat = new THREE.Mesh(geometry, platformMaterial1);
-    scene.add(plat);
+    
+    var boxPlatform = PLATFORM.createBoxWithListener(platform);
 }
 
 const inputControls = {
@@ -367,7 +346,6 @@ const inputControls = {
         if (e.keyCode == '37' && inputControls.keyboard==true) {
 
             if (inputControls.isRightFacing){
-            //  console.log("Dovrei ruotare verso sinistra");
               groupRight.removeAll();
               groupRotating.removeAll();
               FOX.rotateBody(fox, "left");
@@ -481,7 +459,6 @@ function start() {
     document.onkeyup = inputControls.keyUp;
 
     // Init of the scene
-    camera.init(scene);
     lights.init(scene);
     backgroundAndFog.init(scene);
 
@@ -491,47 +468,53 @@ function start() {
     controls.update();
     */
     const axesHelper = new THREE.AxesHelper( 5 );
-    axesHelper.setColors( new THREE.Color("rgb(255, 0, 0)"),  new THREE.Color("rgb(0, 255, 0)"),  new THREE.Color("rgb(0, 0, 255)"))
+    //axesHelper.setColors( new THREE.Color("rgb(255, 0, 0)"),  new THREE.Color("rgb(0, 255, 0)"),  new THREE.Color("rgb(0, 0, 255)"));
     scene.add( axesHelper );
 
     let isFalling = false;
     let i = 0.1;
 
     var animate = function (time) {
-            // Resizes the canvas if the window size is changed
-            if (resizeRendererToDisplaySize(renderer)) {
-                camera.obj.aspect = canvas.clientWidth / canvas.clientHeight;
-                camera.obj.updateProjectionMatrix();
-            }
-            TWEEN.update(time);
-            // Initial jump
-            if(fox.position.y + 1 <= 0 && firstJumpVar == true){
-                FOX.jump(fox);
-                console.log("first jump");
-                firstJumpVar = false;
-            }
+        // Resizes the canvas if the window size is changed
+        if (resizeRendererToDisplaySize(renderer)) {
+            camera.obj.aspect = canvas.clientWidth / canvas.clientHeight;
+            camera.obj.updateProjectionMatrix();
+        }
+        TWEEN.update(time);
+        // Initial jump
+        if(fox.position.y - 1<= 0){
+            FOX.firstJump(fox);
+        }
+
+      //  Update animations
+        groupLeft.update();
+        groupRight.update();
+        groupJumping.update();
+        groupRotating.update();
+        groupFalling.update();
+
+        FOX.changeBoxPosition(fox);
+        //PLATFORM.changeBoxPosition(platform);
+        
+        
+        // Move camera if the fox pass half of the screen and generate new platform
+        let simpleJumpValue = 5;
+        if(fox.position.y >= camera.obj.position.y) {
+            camera.up(simpleJumpValue + fox.position.y);
+            platformID++;
+            drawPlatform(platformID);
+            
+            //handleCollisions(platforms.obj[platformID]);
+            
+        }
+        
+        
+        // collisions
 
 
-          //  Update animations
-            groupLeft.update();
-            groupRight.update();
-            groupJumping.update();
-            groupRotating.update();
-            groupFalling.update();
-
-            // Move camera if the fox pass half of the screen and generate new platform
-            let simpleJumpValue = 5;
-            if(fox.position.y >= camera.obj.position.y) {
-
-                camera.up(simpleJumpValue + fox.position.y);
-                platformID++;
-                drawPlatform(platformID);
-            }
-
-
-            requestAnimationFrame(animate);
-            render();
-        };
+        requestAnimationFrame(animate);
+        render();
+    };
 
     //old
 /*
@@ -605,6 +588,7 @@ function startGame() {
     if(loader.loaded){
         start();
     } else {
+        camera.init(scene);
         loader.loadFox(scene);
         loader.loadWall(scene);
         loader.loadGround(scene);

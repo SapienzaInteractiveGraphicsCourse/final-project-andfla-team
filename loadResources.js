@@ -4,9 +4,6 @@ import * as THREE from './lib/three.js-master/build/three.module.js';
 import { GLTFLoader } from "./lib/three.js-master/examples/jsm/loaders/GLTFLoader.js";
 import * as foxFunc from "./fox.js";
 
-Physijs.scripts.worker = "./lib/physijs_worker.js";
-Physijs.scripts.ammo = "./lib/ammo.js";
-
 const manager = new THREE.LoadingManager();
 const renderer = new THREE.WebGLRenderer();
 
@@ -39,9 +36,9 @@ const Loader = {
         const text = document.createElement("h");
         text.innerText = "Loading...";
         document.body.appendChild(text);
-                
+
         gltfLoader = new GLTFLoader(manager);
-        
+
         // TODO: aggiustare posizione e scaling
         console.log(this.assets.objects.foxGltf);
         gltfLoader.load(this.assets.objects.foxGltf, (gltf) => {
@@ -66,7 +63,7 @@ const Loader = {
             var neck = fox.getObjectByName(foxFunc.fox_dic.Neck);
             var head = fox.getObjectByName(foxFunc.fox_dic.Head);
             var torso = fox.getObjectByName(foxFunc.fox_dic.Torso);
-            
+
             // Front legs
             var rightUpperArm = fox.getObjectByName(foxFunc.fox_dic.RightUpperArm);
             var rightForeArm = fox.getObjectByName(foxFunc.fox_dic.RightForeArm);
@@ -74,7 +71,7 @@ const Loader = {
             var leftUpperArm = fox.getObjectByName(foxFunc.fox_dic.LeftUpperArm);
             var leftForeArm = fox.getObjectByName(foxFunc.fox_dic.LeftForeArm);
             var leftHand = fox.getObjectByName(foxFunc.fox_dic.LeftHand);
-            
+
             // Back legs
             var leftLeg1 = fox.getObjectByName(foxFunc.fox_dic.LeftLeg1);
             var leftLeg2 = fox.getObjectByName(foxFunc.fox_dic.LeftLeg2);
@@ -84,12 +81,12 @@ const Loader = {
             var rightLeg2 = fox.getObjectByName(foxFunc.fox_dic.RightLeg2);
             var rightFoot1 = fox.getObjectByName(foxFunc.fox_dic.RightFoot1);
             var rightFoot2 = fox.getObjectByName(foxFunc.fox_dic.RightFoot2);
-            
+
             // Tail
             var tail1 = fox.getObjectByName(foxFunc.fox_dic.Tail1);
             var tail2 = fox.getObjectByName(foxFunc.fox_dic.Tail2);
             var tail3 = fox.getObjectByName(foxFunc.fox_dic.Tail3);
-            
+
             /* TODO: controllare se hanno bisogno di rotazioni, aggiungere la coda
             rightUpperArm.rotation.z = (0 * Math.PI) / 180;
             leftUpperArm.rotation.z = (45 * Math.PI) / 180;
@@ -99,8 +96,8 @@ const Loader = {
             upperLeg_left.rotation.x = (-180 * Math.PI) / 180;
             //dirLight.target = fox;
             */
-            
-            
+
+
             scene.add(fox);
             //keyboard(fox);
             //foxFunc.setFoxGeometry();

@@ -1,23 +1,23 @@
 "use strict";
 
 import * as THREE from './lib/three.js-master/build/three.module.js';
-//import * as VARIABLES from './variables.js';
+
 // Definizione modello e animazioni
-let left;
-let right;
-let rotateLeft;
-let rotateRight;
-let jumping;
-let extending;
-let bending;
-let gravityFall;
-let landing;
-let firstJumping;
+var left;
+var right;
+var rotateLeft;
+var rotateRight;
+var jumping;
+var extending;
+var bending;
+var gravityFall;
+var landing;
+var firstJumping;
 
-let isFalling = false;
+var isFalling = false;
 
-let simpleJumpValue = 5;
-let simpleFallValue = -40;
+var simpleJumpValue = 15;
+var simpleFallValue = -30;
 
 var tweenStartBending,tweenGoalBending;
 var tweenStartExtending,tweenGoalExtending;
@@ -25,12 +25,13 @@ var tweenStartJumping,tweenGoalJumping;
 var tweenStartFalling,tweenGoalFalling;
 var tweenStartLanding,tweenGoalLanding;
 
+var foxBox;
+
 groupLeft = new TWEEN.Group();
 groupRight = new TWEEN.Group();
 groupJumping = new TWEEN.Group();
 groupRotating = new TWEEN.Group();
 groupFalling = new TWEEN.Group();
-//let rightFacing;  //true if the fox is facing towards right direction, false otherwise (left)
 
 
 const fox_dic = {
@@ -69,10 +70,10 @@ const fox_dic = {
 function moveLeft(fox) {
     //console.log("Root : " + root.rotation.z);
     left = new TWEEN.Tween(fox.position,groupLeft)
-        .to( {}, 100)
+        .to( {}, 1000)
         .easing(TWEEN.Easing.Linear.None)
         .onUpdate(function () {
-          fox.position.x -= 0.1;
+          fox.position.x -= 0.2;
         })
         .start()
 }
@@ -80,10 +81,10 @@ function moveLeft(fox) {
 // Fox moves Right
 function moveRight(fox) {
     right = new TWEEN.Tween(fox.position, groupRight)
-        .to( {}, 100) //{x: +2 + fox.position.x}
+        .to( {}, 1000) //{x: +2 + fox.position.x}
         .easing(TWEEN.Easing.Linear.None)
         .onUpdate(function () {
-            fox.position.x += 0.1;
+            fox.position.x += 0.2;
         })
         .start()
 }
@@ -91,32 +92,32 @@ function moveRight(fox) {
 
 function rotateBody(fox, direction){
 
-  var tweenStartLeft = {
-    z_leftRotation: root.rotation.z,
-    y_leftRotation: root.rotation.y,
-  };
-  var tweenGoalLeft = {
-    z_leftRotation: (-90 * Math.PI) / 180,
-    y_leftRotation: (2 * Math.PI) / 180,
-  };
-  var tweenStartRight = {
-    z_rightRotation: root.position.z,
-    y_leftRotation: root.rotation.y,
-  };
-  var tweenGoalRight = {
-    z_rightRotation: (90 * Math.PI) / 180,
-    y_leftRotation: (-2 * Math.PI) / 180,
-  };
+    var tweenStartLeft = {
+        z_leftRotation: root.rotation.z,
+        y_leftRotation: root.rotation.y,
+        };
+    var tweenGoalLeft = {
+        z_leftRotation: (-90 * Math.PI) / 180,
+        y_leftRotation: (2 * Math.PI) / 180,
+    };
+    var tweenStartRight = {
+        z_rightRotation: root.position.z,
+        y_leftRotation: root.rotation.y,
+    };
+    var tweenGoalRight = {
+        z_rightRotation: (90 * Math.PI) / 180,
+        y_leftRotation: (-2 * Math.PI) / 180,
+    };
 
-  if (direction == "left") {
+    if (direction == "left") {
     //console.log("Root, prima di rotazione verso sinistra: " + root.rotation.z);
 
     rotateLeft = new TWEEN.Tween(tweenStartLeft, groupRotating)
-      .to(tweenGoalLeft ,200)
-      .easing(TWEEN.Easing.Linear.None)
-      .onUpdate(function () {
-        root.rotation.z= tweenStartLeft.z_leftRotation;
-        root.rotation.y= tweenStartLeft.y_leftRotation;
+        .to(tweenGoalLeft ,100)
+        .easing(TWEEN.Easing.Linear.None)
+        .onUpdate(function () {
+            root.rotation.z= tweenStartLeft.z_leftRotation;
+            root.rotation.y= tweenStartLeft.y_leftRotation;
       })
       .start();
       //console.log("Root, dopo rotazione verso sinistra: " + root.rotation.z);
@@ -124,7 +125,7 @@ function rotateBody(fox, direction){
 
   if (direction == "right") {
     rotateRight = new TWEEN.Tween(tweenStartRight, groupRotating)
-      .to(tweenGoalRight, 200)  //{z: (90 * Math.PI) / 180 }
+      .to(tweenGoalRight, 100)  //{z: (90 * Math.PI) / 180 }
       .easing(TWEEN.Easing.Linear.None)
       .onUpdate(function () {
         root.rotation.z = tweenStartRight.z_rightRotation;
@@ -153,10 +154,6 @@ function firstJump(fox) {
     firstJumping = new TWEEN.Tween(fox.position)
         .to({y: +simpleJumpValue + fox.position.y}, 600)
         .easing(TWEEN.Easing.Quadratic.Out)
-        .delay(500)
-        .onUpdate(function(){
-          console.log("initial jump");
-        })
         .start();
 }
 
@@ -164,7 +161,6 @@ function jump(fox) {
     console.log("jump animation");
 
   tweenStartBending = {
-
     y:            fox.position.y,
     rightUpperArm:rightUpperArm.rotation.z,
     rightForeArm: rightForeArm.rotation.z,
@@ -321,7 +317,7 @@ function jump(fox) {
         .start();
 
     jumping = new TWEEN.Tween(tweenStartJumping, groupJumping)
-        .to(tweenGoalJumping,1000) //{y: +simpleJumpValue + fox.position.y},tweenGoalJumping
+        .to(tweenGoalJumping, 1000) //{y: +simpleJumpValue + fox.position.y},tweenGoalJumping
         .easing(TWEEN.Easing.Linear.None)
         .onUpdate(function () {
         //  console.log("jumping");
@@ -343,7 +339,7 @@ function jump(fox) {
         console.log("neck.rotation.z= " +neck.rotation.z);}*/
 
       gravityFall = new TWEEN.Tween(tweenStartFalling, groupJumping)
-            .to(tweenGoalFalling, 4500)  //y: - simpleFallValue + root.position.y
+            .to(tweenGoalFalling, 3500)  //y: - simpleFallValue + root.position.y
             .easing(TWEEN.Easing.Quadratic.In)
             .onUpdate( function(){
               if (isFalling){
@@ -394,54 +390,7 @@ function jump(fox) {
   //    gravityFall.chain(jumping);
 }
 
-export{fox_dic, moveLeft, moveRight, rotateBody, jump, fall, firstJump}
-
-
-
-//old version
 /*
-"use strict";
-
-import * as THREE from './lib/three.js-master/build/three.module.js';
-
-// Definizione modello e animazioni
-let left;
-let right;
-let jumping;
-let gravityFall;
-let isFalling = false;
-let simpleJumpValue = 5;
-let simpleFallValue = 15;
-
-const fox_dic = {
-    Root: "b_Root_00",
-
-    Hip: "b_Hip_01",
-    Spine1: "b_Spine01_02",
-    Spine2: "b_Spine02_03",
-    Neck: "b_Neck_04",
-    Head: "b_Head_05",
-
-    RightUpperArm: "b_RightUpperArm_06",
-    RightForeArm: "b_RightForeArm_07",
-    RightHand: "b_RightHand_08",
-    LeftUpperArm: "b_LeftUpperArm_09",
-    LeftForeArm: "b_LeftForeArm_010",
-    LeftHand: "b_LeftHand_011",
-
-    Tail1: "b_Tail01_012",
-    Tail2: "b_Tail02_013",
-    Tail3: "b_Tail03_014",
-
-    LeftLeg1: "b_LeftLeg01_015",
-    LeftLeg2: "b_LeftLeg02_016",
-    LeftFoot1: "b_LeftFoot01_017",
-    LeftFoot2: "b_LeftFoot02_018",
-    RightLeg1: "b_RightLeg01_019",
-    RightLeg2: "b_RightLeg02_020",
-    RightFoot1: "b_RightFoot01_021",
-    RightFoot2: "b_RightFoot02_022",
-};
 
 // Fox moves Left
 function moveLeft(fox) {
@@ -482,3 +431,50 @@ function firstJump(fox) {
 
 export{fox_dic, moveLeft, moveRight, jump, fall}
 */
+
+// COLLISIONS FUNCTIONS
+function collisionListener(fox) {
+    var material = Physijs.createMaterial( new THREE.MeshStandardMaterial({color: 0x00ff00} ));
+    
+    var foxGeometry = new THREE.BoxGeometry(2.7, 0.2, 2);
+    foxBox = new Physijs.BoxMesh(foxGeometry, material, 50);
+    foxBox.position.set(fox.position.x, fox.position.y , fox.position.z);
+    
+    foxBox.setCcdMotionThreshold(1);
+    scene.add(foxBox);
+    
+    foxBox.addEventListener("collision", function() {
+        console.log("collided, insert here code FOXXXXXXXX");
+    });
+}
+
+function changeBoxPosition(fox) {
+    foxBox.position.set( fox.position.x, fox.position.y + 1, fox.position.z );
+
+    var foxBoxPos = foxBox.position.clone();
+    foxBox.position.copy(foxBoxPos);
+    foxBox.rotation.set(0, 0, 0);
+    foxBox.__dirtyPosition = true;
+    foxBox.__dirtyRotation = true;
+}
+
+export{fox_dic, moveLeft, moveRight, rotateBody, jump, fall, firstJump, collisionListener, changeBoxPosition}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
