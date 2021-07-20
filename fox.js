@@ -63,30 +63,6 @@ const fox_dic = {
     RightFoot2: "b_RightFoot02_022",
 };
 
-// Fox moves Left
-/*function moveLeft(fox) {
-    //console.log("Root : " + root.rotation.z);
-    left = new TWEEN.Tween(fox.position,groupLeft)
-        .to( {}, 1000)
-        .easing(TWEEN.Easing.Linear.None)
-        .onUpdate(function () {
-          fox.position.x -= 0.2;
-        })
-        .start()
-}
-
-// Fox moves Right
-function moveRight(fox) {
-    right = new TWEEN.Tween(fox.position, groupRight)
-        .to( {}, 1000) //{x: +2 + fox.position.x}
-        .easing(TWEEN.Easing.Linear.None)
-        .onUpdate(function () {
-            fox.position.x += 0.2;
-        })
-        .start()
-}
-*/
-
 function moveLeft(fox) {
     left = new TWEEN.Tween(fox.position,groupLeft)
         .to( {x: -30 + fox.position.x}, 1000)
@@ -155,7 +131,6 @@ function fall(fox) {
 
 // Stops the falling animation
 function stopFallAnimation() {
-    jump.stop();
     gravityFall.stop();
 }
 
@@ -195,7 +170,7 @@ function jump(fox) {
     neck:         neck.rotation.z,
   };
   tweenGoalBending = {
-    y:           tweenStartBending.y-0.3,
+    y:           tweenStartBending.y,
     rightUpperArm:  (-45 * Math.PI) / 180,
     rightForeArm:   (-90 * Math.PI) / 180,
     rightHand:      (90 * Math.PI) / 180,
@@ -370,7 +345,7 @@ function jump(fox) {
 
 // COLLISIONS FUNCTIONS
 function collisionListener(fox) {
-    var material = Physijs.createMaterial( new THREE.MeshStandardMaterial({transparent: true, opacity: 0} ));
+    var material = Physijs.createMaterial( new THREE.MeshStandardMaterial({side: THREE.DoubleSide, opacity: 0, transparent: true, depthWrite: false} ));
     
     var foxGeometry = new THREE.BoxGeometry(2.7, 0.2, 2);
     foxBox = new Physijs.BoxMesh(foxGeometry, material, 50);
@@ -395,7 +370,7 @@ function changeBoxPosition(fox) {
     foxBox.__dirtyRotation = true;
 }
 
-export{fox_dic, moveLeft, moveRight, rotateBody, jump, fall, firstJump, collisionListener, changeBoxPosition}
+export{fox_dic, moveLeft, moveRight, rotateBody, jump, fall, stopFallAnimation, firstJump, collisionListener, changeBoxPosition}
 
 
 

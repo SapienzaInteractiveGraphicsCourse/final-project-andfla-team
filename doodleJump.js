@@ -11,6 +11,7 @@ Physijs.scripts.worker = "./lib/physijs_worker.js";
 Physijs.scripts.ammo = "./ammo.js";
 
 const manager = new THREE.LoadingManager();
+const center_value = 10;
 
 var fox;
 var foxInitialPosition = {
@@ -35,7 +36,6 @@ const camera = {
         const aspect = window.innerWidth / window.innerHeight;
         const near = 0.1;
         const far = 100;
-        const center_value = 10;
         this.obj = new THREE.PerspectiveCamera(fov, aspect, near, far);
         this.obj.position.set(0, center_value, z);
         this.obj.lookAt(0, center_value, 0);
@@ -52,21 +52,6 @@ const camera = {
             .to({y: y}, 1000)
             .easing(TWEEN.Easing.Quadratic.Out)
             .start();
-    }
-}
-
-// Projection
-const frustum = {
-    obj: null,
-
-    // Initialized the view frustum
-    init: function() {
-        this.obj = new THREE.Frustum();
-    },
-
-    // Updates the view frustum
-    update: function() {
-        this.obj.setFromProjectionMatrix(new THREE.Matrix4().multiplyMatrices(camera.obj.projectionMatrix, camera.obj.matrixWorldInverse));
     }
 }
 
@@ -328,47 +313,25 @@ const inputControls = {
         if (e.keyCode == '37' && inputControls.keyboard==true) {
 
             if (inputControls.isRightFacing){
-              groupRight.removeAll();
-              groupRotating.removeAll();
-              FOX.rotateBody(fox, "left");
-              inputControls.isRightFacing = false;
+                groupRight.removeAll();
+                groupRotating.removeAll();
+                FOX.rotateBody(fox, "left");
+                inputControls.isRightFacing = false;
             }
             inputControls.isMoving = -1;
             FOX.moveLeft(fox);
         }
 
         else if (e.keyCode == '39' && inputControls.keyboard==true) {
-          if (!inputControls.isRightFacing){
-            groupLeft.removeAll();
-            groupRotating.removeAll();
-            FOX.rotateBody(fox, "right");
-            inputControls.isRightFacing = true;
-          }
+            if (!inputControls.isRightFacing){
+                groupLeft.removeAll();
+                groupRotating.removeAll();
+                FOX.rotateBody(fox, "right");
+                inputControls.isRightFacing = true;
+            }
             inputControls.isMoving = 1;
             FOX.moveRight(fox);
          }
-        else if (e.keyCode == '38' && inputControls.keyboard==true) {
-            // Top
-            inputControls.isMoving = 0;
-            groupJumping.removeAll();
-            groupLeft.removeAll();
-            groupRight.removeAll();
-            groupRotating.removeAll();
-
-            FOX.jump(fox);
-         }
-        /* freccia giù = game over (colpito nemico),
-          la volpe cade e la tasiera è bloccata*/
-        else if (e.keyCode == '40') {
-            // Down
-            groupJumping.removeAll();
-            groupLeft.removeAll();
-            groupRight.removeAll();
-            groupRotating.removeAll();
-            FOX.fall(fox);
-            inputControls.isMoving = 0;
-            inputControls.keyboard = false;
-        }
     },
 
     keyUp: function (e) {
@@ -425,17 +388,18 @@ function start() {
             camera.obj.updateProjectionMatrix();
         }
         TWEEN.update(time);
-        // Initial jump
-        if(fox.position.y <= -1 && !isFalling){
-            //FOX.firstJump(fox);
-        }
-
-      //  Update animations
+        
+        // Update animations
         groupLeft.update();
         groupRight.update();
         groupJumping.update();
         groupRotating.update();
         groupFalling.update();
+        
+        // Initial jump
+        if(fox.position.y + 1 <= 0){
+            FOX.jump(fox);
+        }
 
         FOX.changeBoxPosition(fox);
         
@@ -450,17 +414,25 @@ function start() {
             platformID++;
             drawPlatform(platformID);
         }
-        // collisions
-
+        
+        // Physijs collisions
         scene.simulate();
+        
+        // Game over
+        if( Math.abs(fox.position.y - camera.obj.position.y)  >= center_value + 6) {
+            groupJumping.removeAll();
+            groupLeft.removeAll();
+            groupRight.removeAll();
+            groupRotating.removeAll();
+            
+            FOX.stopFallAnimation(fox);
+            inputControls.isMoving = 0;
+            inputControls.keyboard = false;
+        }
 
         requestAnimationFrame(animate);
-        render();
-    };
-
-    function render() {
         renderer.render(scene, camera.obj);
-    }
+    };
 
     animate();
 }
@@ -486,10 +458,10 @@ function startGame() {
         start();
     } else {
         camera.init(scene);
-        loader.loadFox(scene);
         loader.loadPlatform(scene);
         loader.loadWall(scene);
         loader.loadGround(scene);
+        loader.loadFox(scene);
         loader.onLoad = start;
     }
 }
