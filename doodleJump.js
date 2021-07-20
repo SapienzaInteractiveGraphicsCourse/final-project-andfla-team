@@ -6,11 +6,13 @@ import * as FOX from "./fox.js";
 import * as PLATFORM from "./platform.js";
 import {platform} from './platform.js';
 import * as UTILS from './utils.js';
+import {gameOver} from './index.js';
 
 Physijs.scripts.worker = "./lib/physijs_worker.js";
 Physijs.scripts.ammo = "./ammo.js";
 
 const manager = new THREE.LoadingManager();
+//const manager_platform = new THREE.LoadingManager();
 const center_value = 10;
 
 var fox;
@@ -428,6 +430,9 @@ function start() {
             FOX.stopFallAnimation(fox);
             inputControls.isMoving = 0;
             inputControls.keyboard = false;
+            
+            var score = 20000000000000; //TODO: fare punteggio
+            gameOver(score);
         }
 
         requestAnimationFrame(animate);
