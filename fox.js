@@ -14,7 +14,6 @@ var gravityFall;
 var landing;
 var firstJumping;
 
-var isFalling = false;
 
 var simpleJumpValue = 15;
 var simpleFallValue = -30;
@@ -65,7 +64,7 @@ const fox_dic = {
 };
 
 // Fox moves Left
-function moveLeft(fox) {
+/*function moveLeft(fox) {
     //console.log("Root : " + root.rotation.z);
     left = new TWEEN.Tween(fox.position,groupLeft)
         .to( {}, 1000)
@@ -86,6 +85,22 @@ function moveRight(fox) {
         })
         .start()
 }
+*/
+
+function moveLeft(fox) {
+    left = new TWEEN.Tween(fox.position,groupLeft)
+        .to( {x: -30 + fox.position.x}, 1000)
+        .easing(TWEEN.Easing.Linear.None)
+        .start()
+}
+
+function moveRight(fox) {
+    right = new TWEEN.Tween(fox.position, groupRight)
+        .to( {x: 30 + fox.position.x}, 1000) //{x: +2 + fox.position.x}
+        .easing(TWEEN.Easing.Linear.None)
+        .start()
+}
+
 
 
 function rotateBody(fox, direction){
@@ -134,7 +149,6 @@ function rotateBody(fox, direction){
 function fall(fox) {
     gravityFall = new TWEEN.Tween(fox.position, groupFalling)
         .to({y:  simpleFallValue + fox.position.y}, 1000)
-
         .easing(TWEEN.Easing.Quadratic.In)
         .start();
 }
@@ -149,11 +163,22 @@ function firstJump(fox) {
     firstJumping = new TWEEN.Tween(fox.position)
         .to({y: +simpleJumpValue + fox.position.y}, 600)
         .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(function () {
+            isFalling=false;
+            })
         .start();
+        
+    var firstFalling = new TWEEN.Tween(fox.position)
+        .to({y: -simpleJumpValue + fox.position.y}, 600)
+        .easing(TWEEN.Easing.Quadratic.In)
+        .onUpdate(function () {
+            isFalling=true; })
+        //.delay(600)
+        
+    firstJumping.chain(firstFalling);
 }
 
 function jump(fox) {
-    console.log("jump animation");
 
   tweenStartBending = {
     y:            fox.position.y,
@@ -310,8 +335,8 @@ function jump(fox) {
 
           isFalling = false;
         })
-        .delay(100)
-        .start();
+        //.delay(100)
+        //.start();
 
     jumping = new TWEEN.Tween(tweenStartJumping, groupJumping)
         .to(tweenGoalJumping, 1000) //{y: +simpleJumpValue + fox.position.y},tweenGoalJumping
@@ -321,8 +346,8 @@ function jump(fox) {
             tail1.rotation.z = tweenStartJumping.tail1;
             isFalling=false;
         })
-        .delay(100)
-        .start()
+        //.delay(100)
+        //.start()
         .onComplete(function(){
           isFalling=true;
         });
@@ -335,14 +360,9 @@ function jump(fox) {
                 fox.position.y = tweenStartFalling.y;
                 tail1.rotation.z = tweenStartFalling.tail1;
               }
-              //console.log("root.position.y = "+ root.position.y);
-              //console.log("Gravity Fall");
             })
-            .delay(1000)
-            .start()
-            .onComplete(function(){
-                isFalling = false;
-            });
+            //.delay(1000)
+            //.start();
 
     bending.chain(extending,jumping);
     jumping.chain(gravityFall);
@@ -350,7 +370,7 @@ function jump(fox) {
 
 // COLLISIONS FUNCTIONS
 function collisionListener(fox) {
-    var material = Physijs.createMaterial( new THREE.MeshStandardMaterial({color: 0x00ff00} ));
+    var material = Physijs.createMaterial( new THREE.MeshStandardMaterial({transparent: true, opacity: 0} ));
     
     var foxGeometry = new THREE.BoxGeometry(2.7, 0.2, 2);
     foxBox = new Physijs.BoxMesh(foxGeometry, material, 50);
@@ -360,7 +380,8 @@ function collisionListener(fox) {
     scene.add(foxBox);
     
     foxBox.addEventListener("collision", function() {
-        console.log("collided, insert here code FOXXXXXXXX");
+        if (isFalling)
+            jump(fox);
     });
 }
 

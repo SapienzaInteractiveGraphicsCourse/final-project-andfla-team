@@ -42,3 +42,6 @@ var platforms = [];
 var boxPlatforms = [];
 
 var wall;
+
+
+var isFalling = false;

@@ -31,15 +31,16 @@ function createBoxWithListener(platform) {
     
     var geometry = new THREE.BoxGeometry(6, 0.5, 4);
     var boxPlatform;
-    boxPlatform = new Physijs.BoxMesh(geometry, material, 50);
+    boxPlatform = new Physijs.BoxMesh(geometry, material, 0);
     boxPlatform.position.set(platform.position.x, platform.position.y, platform.position.z);
     
-    boxPlatform.setCcdMotionThreshold(1);
     scene.add(boxPlatform);
     
+    /*
     boxPlatform.addEventListener("collision", function() {
         console.log("collided, insert here code for BOXXXX");
     });
+    */
     
     return boxPlatform;
 }
@@ -49,12 +50,8 @@ function changeBoxPosition(boxPlatforms, platforms) {
         var boxPlatform = boxPlatforms[i];
         var platform = platforms[i];
         
-        console.log(platforms[i]);
-        console.log("TUTT"+platforms);
-        
         boxPlatform.position.set( platform.position.x, platform.position.y, platform.position.z );
         
-
         var platBoxPos = boxPlatform.position.clone();
         boxPlatform.position.copy(platBoxPos);
         boxPlatform.rotation.set(0, 0, 0);

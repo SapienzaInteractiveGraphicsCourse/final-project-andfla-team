@@ -267,7 +267,7 @@ const loader = {
             var wallMaterial = new THREE.MeshBasicMaterial({
                 map: texture
             });
-            wall = new THREE.Mesh(geometry, wallMaterial);
+            wall = new THREE.Mesh(geometry, wallMaterial, 0);
             scene.add(wall);
         } );
 
@@ -286,7 +286,7 @@ const loader = {
             var groundMaterial = new THREE.MeshBasicMaterial({
                 map: texture
             });
-            var ground = new THREE.Mesh(geometry, groundMaterial);
+            var ground = new THREE.Mesh(geometry, groundMaterial, 0);
             ground.rotation.x = (-90 * Math.PI) / 180;
 
             scene.add(ground);
@@ -303,8 +303,6 @@ const loader = {
 
 function drawPlatform(platformID) {
     var platformMaterial1;
-
-    var loader = new THREE.TextureLoader();
 
     platform.ID = platformID;
     platform.generate(camera.visible_width/4, 20);
@@ -325,8 +323,6 @@ const inputControls = {
         this.isMoving = 0;//unused
         this.isRightFacing = true;
         this.keyboard = true;
-        //console.log("INIT: This.isRight Facing : "+ this.isRightFacing);
-
     },
     keyDown: function (e) {
         if (e.keyCode == '37' && inputControls.keyboard==true) {
@@ -336,21 +332,17 @@ const inputControls = {
               groupRotating.removeAll();
               FOX.rotateBody(fox, "left");
               inputControls.isRightFacing = false;
-              //console.log("LEFT ROTATED: This.isRight Facing : "+ inputControls.isRightFacing);
             }
             inputControls.isMoving = -1;
             FOX.moveLeft(fox);
-            //console.log("Imposto  a -1 "+ inputControls.isMoving);
         }
 
         else if (e.keyCode == '39' && inputControls.keyboard==true) {
           if (!inputControls.isRightFacing){
-            //console.log("Should rotate towards right");
             groupLeft.removeAll();
             groupRotating.removeAll();
             FOX.rotateBody(fox, "right");
             inputControls.isRightFacing = true;
-          //  console.log("RIGHT ROTATED: This.isRight Facing : "+ inputControls.isRightFacing);
           }
             inputControls.isMoving = 1;
             FOX.moveRight(fox);
@@ -384,7 +376,6 @@ const inputControls = {
             inputControls.isMoving = 0;
             groupLeft.removeAll();
             groupRight.removeAll();
-            //console.log("Reimposto a 0 "+inputControls.isMoving);
         }
     },
 }
@@ -435,8 +426,8 @@ function start() {
         }
         TWEEN.update(time);
         // Initial jump
-        if(fox.position.y - 1<= 0){
-            FOX.firstJump(fox);
+        if(fox.position.y <= -1 && !isFalling){
+            //FOX.firstJump(fox);
         }
 
       //  Update animations
@@ -458,9 +449,6 @@ function start() {
             
             platformID++;
             drawPlatform(platformID);
-            
-            //wall.translateY(1);
-            //wall.position.y = simpleJumpValue + fox.position.y;
         }
         // collisions
 
@@ -499,9 +487,9 @@ function startGame() {
     } else {
         camera.init(scene);
         loader.loadFox(scene);
+        loader.loadPlatform(scene);
         loader.loadWall(scene);
         loader.loadGround(scene);
-        loader.loadPlatform(scene);
         loader.onLoad = start;
     }
 }
