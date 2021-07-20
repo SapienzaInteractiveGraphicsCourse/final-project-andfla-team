@@ -65,8 +65,6 @@ const fox_dic = {
 };
 
 // Fox moves Left
-
-//function traslate(fox,direction)
 function moveLeft(fox) {
     //console.log("Root : " + root.rotation.z);
     left = new TWEEN.Tween(fox.position,groupLeft)
@@ -110,8 +108,6 @@ function rotateBody(fox, direction){
     };
 
     if (direction == "left") {
-    //console.log("Root, prima di rotazione verso sinistra: " + root.rotation.z);
-
     rotateLeft = new TWEEN.Tween(tweenStartLeft, groupRotating)
         .to(tweenGoalLeft ,100)
         .easing(TWEEN.Easing.Linear.None)
@@ -120,7 +116,6 @@ function rotateBody(fox, direction){
             root.rotation.y= tweenStartLeft.y_leftRotation;
       })
       .start();
-      //console.log("Root, dopo rotazione verso sinistra: " + root.rotation.z);
   }
 
   if (direction == "right") {
@@ -148,7 +143,7 @@ function fall(fox) {
 function stopFallAnimation() {
     jump.stop();
     gravityFall.stop();
-} //unused
+}
 
 function firstJump(fox) {
     firstJumping = new TWEEN.Tween(fox.position)
@@ -227,15 +222,19 @@ function jump(fox) {
   };
   tweenStartJumping ={
       y:        tweenGoalBending.y, //fox.position.y,
+      tail1:    tail1.rotation.z,
   }
   tweenGoalJumping ={
       y:        tweenStartJumping.y + simpleJumpValue,
+      tail1:    (180 * Math.PI) / 180,
   }
   tweenStartFalling ={
       y:        tweenGoalJumping.y,
+      tail1:    tweenGoalJumping.tail1,
   }
   tweenGoalFalling ={
       y:        tweenStartFalling.y + simpleFallValue,
+      tail1:    (30 * Math.PI) / 180,
   }
 
 //landing unused
@@ -290,7 +289,6 @@ function jump(fox) {
           neck.rotation.z = tweenStartBending.neck;
 
           isFalling = false;
-          //console.log("bending");
         })
         .start();
 
@@ -311,7 +309,6 @@ function jump(fox) {
           neck.rotation.z = tweenStartExtending.neck;
 
           isFalling = false;
-          //console.log("ext");
         })
         .delay(100)
         .start();
@@ -320,9 +317,9 @@ function jump(fox) {
         .to(tweenGoalJumping, 1000) //{y: +simpleJumpValue + fox.position.y},tweenGoalJumping
         .easing(TWEEN.Easing.Linear.None)
         .onUpdate(function () {
-        //  console.log("jumping");
-          fox.position.y = tweenStartJumping.y;
-          isFalling=false;
+            fox.position.y = tweenStartJumping.y;
+            tail1.rotation.z = tweenStartJumping.tail1;
+            isFalling=false;
         })
         .delay(100)
         .start()
@@ -330,20 +327,13 @@ function jump(fox) {
           isFalling=true;
         });
 
-/*{        console.log("rightUpperArm.rotation.z= " +rightUpperArm.rotation.z);
-        console.log("rightForeArm.rotation.z= " +rightForeArm.rotation.z);
-        console.log("rightHand.rotation.z= " +rightHand.rotation.z);
-        console.log("rightLeg1.rotation.z= " +rightLeg1.rotation.z);
-        console.log("rightLeg2.rotation.z= " +rightLeg2.rotation.z);
-        console.log("rightUpperArm.rotation.z= " +rightUpperArm.rotation.z);
-        console.log("neck.rotation.z= " +neck.rotation.z);}*/
-
       gravityFall = new TWEEN.Tween(tweenStartFalling, groupJumping)
-            .to(tweenGoalFalling, 3500)  //y: - simpleFallValue + root.position.y
+            .to(tweenGoalFalling, 2500)  //y: - simpleFallValue + root.position.y
             .easing(TWEEN.Easing.Quadratic.In)
             .onUpdate( function(){
               if (isFalling){
                 fox.position.y = tweenStartFalling.y;
+                tail1.rotation.z = tweenStartFalling.tail1;
               }
               //console.log("root.position.y = "+ root.position.y);
               //console.log("Gravity Fall");
@@ -354,83 +344,9 @@ function jump(fox) {
                 isFalling = false;
             });
 
-/*
-      landing = new TWEEN.Tween(tweenStartLanding, groupJumping)
-            .to(tweenGoalLanding,100)
-            .easing(TWEEN.Easing.Linear.None)
-            .onUpdate(function () {
-                  root.position.y = tweenStartLanding.y;
-                  rightUpperArm.rotation.z = tweenStartLanding.rightUpperArm;
-                  rightForeArm.rotation.z = tweenStartLanding.rightForeArm;
-                  rightHand.rotation.z = tweenStartLanding.rightHand;
-                  leftUpperArm.rotation.z = tweenStartLanding.leftUpperArm;
-                  leftForeArm.rotation.z = tweenStartLanding.leftForeArm;
-                  leftHand.rotation.z = tweenStartLanding.leftHand;
-                  rightLeg1.rotation.z = tweenStartLanding.rightLeg1;
-                  rightLeg2.rotation.z = tweenStartLanding.rightLeg2;
-                  leftLeg1.rotation.z = tweenStartLanding.leftLeg1;
-                  leftLeg2.rotation.z = tweenStartLanding.leftLeg2;
-                  neck.rotation.z = tweenStartLanding.neck;
-
-                  isFalling = false;
-                  console.log("Landing");
-              })
-              .start();
-*/
-
-            //jumping.chain(gravityFall);
-
-
-    //bending.chain(jumping)
-    //extending.chain(jumping);
-
     bending.chain(extending,jumping);
     jumping.chain(gravityFall);
-    //gravityFall.chain(landing);
-  //    gravityFall.chain(jumping);
 }
-
-/*
-
-// Fox moves Left
-function moveLeft(fox) {
-    left = new TWEEN.Tween(fox.position)
-        .to( {x: -2 + fox.position.x}, 100)
-        .easing(TWEEN.Easing.Linear.None)
-        .start()
-}
-
-// Fox moves Right
-function moveRight(fox) {
-    right = new TWEEN.Tween(fox.position)
-        .to( {x: +2 + fox.position.x}, 100)
-        .easing(TWEEN.Easing.Linear.None)
-        .start()
-}
-
-// Starts the falling animation
-function fall(fox) {
-    gravityFall = new TWEEN.Tween(fox.position)
-        .to({y: - simpleFallValue + fox.position.y}, 1000)
-        .easing(TWEEN.Easing.Quadratic.In)
-        .start();
-}
-
-// Stops the falling animation
-function stopFallAnimation() {
-    jump.stop();
-    gravityFall.stop();
-}
-
-function firstJump(fox) {
-    jumping = new TWEEN.Tween(fox.position)
-        .to({y: +simpleJumpValue + fox.position.y}, 600)
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .start();
-}
-
-export{fox_dic, moveLeft, moveRight, jump, fall}
-*/
 
 // COLLISIONS FUNCTIONS
 function collisionListener(fox) {

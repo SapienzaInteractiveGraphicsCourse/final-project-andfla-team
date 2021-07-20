@@ -37,3 +37,8 @@ var groupFalling;
 
 var box;
 var foxBox;
+
+var platforms = [];
+var boxPlatforms = [];
+
+var wall;

@@ -2,6 +2,8 @@
 
 import * as UTILS from './utils.js';
 
+var number = 10;
+
 const platform = {
     ID: 0,
     
@@ -19,14 +21,8 @@ const platform = {
     
     generate: function (visible_width, visible_height) {
         this.position.x = UTILS.generateRandomInt(-visible_width, +visible_width);
-        this.position.y = 6 * this.ID + visible_height/platforms.number;
+        this.position.y = 6 * this.ID + visible_height/number;
     }
-}
-
-const platforms = {
-  obj: [],
-  
-  number: 10,
 }
 
 // COLLISIONS FUNCTIONS
@@ -48,14 +44,23 @@ function createBoxWithListener(platform) {
     return boxPlatform;
 }
 
-function changeBoxPosition(boxPlatform, platform) {
-    box.position.set( platform.position.x, platform.position.y + 1, platform.position.z );
+function changeBoxPosition(boxPlatforms, platforms) {
+    for (var i = 0; i< platforms.length; i++) {
+        var boxPlatform = boxPlatforms[i];
+        var platform = platforms[i];
+        
+        console.log(platforms[i]);
+        console.log("TUTT"+platforms);
+        
+        boxPlatform.position.set( platform.position.x, platform.position.y, platform.position.z );
+        
 
-    var platBoxPos = platform.position.clone();
-    box.position.copy(platBoxPos);
-    box.rotation.set(0, 0, 0);
-    box.__dirtyPosition = true;
-    box.__dirtyRotation = true;
+        var platBoxPos = boxPlatform.position.clone();
+        boxPlatform.position.copy(platBoxPos);
+        boxPlatform.rotation.set(0, 0, 0);
+        boxPlatform.__dirtyPosition = true;
+        boxPlatform.__dirtyRotation = true;
+    }
 }
 
-export {platform, platforms, changeBoxPosition, createBoxWithListener};
+export {platform, changeBoxPosition, createBoxWithListener};
