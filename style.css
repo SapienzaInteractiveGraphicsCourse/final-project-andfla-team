@@ -1,7 +1,7 @@
 html {
     margin: 0;
     height: 100vh;
-    
+
     user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -15,7 +15,7 @@ body {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(3, 1fr);
-    
+
     background-color: #000000;
 }
 
@@ -23,7 +23,17 @@ h {
     display: block;
     text-align: center;
     font-size: 50px;
-    color: white;
+    color: #F35A08; /*white*/
+    font-family: Courier, Verdana, Geneva, sans-serif;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+h1 {
+    display: block;
+    text-align: center;
+    font-size: 50px;
+    /*color: #F35A08; white*/
     font-family: Courier, Verdana, Geneva, sans-serif;
     margin-top: 50px;
     margin-bottom: 50px;
@@ -55,7 +65,7 @@ p {
     text-align: center;
     background-color: #F35A08;
     font-family: Courier, Verdana, Geneva, sans-serif;
-    
+
     transition-duration: 0.4s;
 }
 
@@ -64,18 +74,74 @@ p {
   color: black;
 }
 
+*{
+  box-sizing: border-box;
+}
+
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 5px;
+}
+
+/* Clearfix (clear floats) */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+img {
+    width:300px;
+    height:300px;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 33.3%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #008CBA;
+}
+
+
+.column:hover .choiceImg {
+  /*opacity: : 0.9;*/
+  filter: brightness(1.25);
+  filter: contrast(1.5);
+/*  background-color: #FFFFFF;
+  color: black;*/
+}
+
+.text {
+  color: white;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
 #gameOver {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: auto;
-        
+
     background-color: #000000;
 }
 
 #canvasID {
     width: 2%;
     height: 2%;
-    
+
     padding-left: 0;
     padding-right: 0;
     margin-left: auto;

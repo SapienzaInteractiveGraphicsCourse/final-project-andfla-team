@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Choose Background</title>
+
+    <link rel="icon" href="./resources/fox_icon.png">
+    <link rel="stylesheet" type="text/css" href="./style.css">
+    <script type="text/javascript" src="./bg.js"></script>
+    </head>
+
+    <body>
+        <div>
+            <h>Choose your favourite background</h>
+
+            <div class="row">
+
+                  <div class="column">
+                    <label>
+                      <input type="radio" id="bg0" name="choice" value="0" checked>
+                      <img class="choiceImg" src="./resources/scraper_texture_1.jpg" style="width:100%">
+                    </label>
+                  </div>
+
+
+                  <div class="column">
+                    <label>
+                      <input type="radio" id="bg1"name="choice" value="1">
+                      <img class="choiceImg" src="./resources/wall_light.jpg" style="width:100%">
+
+                      </label>
+                  </div>
+
+
+                <div class="column">
+                  <label>
+                      <input type="radio" id="bg2" name="choice" value="2">
+                      <img class="choiceImg" src="./resources/wall.jpg" style="width:100%">
+                    </label>
+                </div>
+           </div>
+
+
+<!--
+            <div class = "container">
+                <label>
+                      <input type="radio" id="bg0" name="choice" value="0" checked>
+                      <img class="choiceImg" src="./resources/scraper_texture_1.jpg">
+                </label>
+
+                <label>
+                      <input type="radio" id="bg1"name="choice" value="1">
+                      <img class="choiceImg" src="./resources/wall_light.jpg">
+                </label>
+
+                <label>
+                      <input type="radio" id="bg2" name="choice" value="2">
+                      <img class="choiceImg" src="./resources/wall.jpg">
+                </label>
+              </div>
+-->
+              <br><br><br><br>
+
+        <div>
+            <button type="button" class="button" onclick = "choiceFunction()" >Confirm choice</button>
+        </div>
+      </div>
+
+    </body>
+</html>

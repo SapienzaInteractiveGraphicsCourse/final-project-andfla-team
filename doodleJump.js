@@ -11,6 +11,8 @@ import {gameOver} from './index.js';
 Physijs.scripts.worker = "./lib/physijs_worker.js";
 Physijs.scripts.ammo = "./ammo.js";
 
+scene = new Physijs.Scene();
+texLoader = new THREE.TextureLoader();
 const manager = new THREE.LoadingManager();
 //const manager_platform = new THREE.LoadingManager();
 const center_value = 10;
@@ -560,8 +562,6 @@ function start() {
             FOX.stopFallAnimation(fox);
             inputControls.isMoving = 0;
             inputControls.keyboard = false;
-
-            console.log("Final Score = " + score);
 
             //Remove the scene at the end of the game
             while(scene.children.length > 0){

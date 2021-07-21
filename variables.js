@@ -1,4 +1,4 @@
-const scene  = new Physijs.Scene();
+var scene;
 
 var root;
 var hip;
@@ -42,7 +42,7 @@ var foxBox;
 var platforms = [];
 var boxPlatforms = [];
 var wall;
-var texLoader = new THREE.TextureLoader();
+var texLoader;
 var realPlatformMaterial;
 
 var backgroundChoice = 0;

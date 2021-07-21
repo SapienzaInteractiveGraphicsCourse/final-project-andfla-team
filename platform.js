@@ -37,10 +37,11 @@ function createBoxWithListener(platform) {
 
     scene.add(boxPlatform);
 
+/*
     boxPlatform.addEventListener("collision", function() {
         console.log("collided, insert here code for BOXXXX");
     });
-
+*/
     return boxPlatform;
 }
 

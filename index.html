@@ -3,37 +3,56 @@
     <head>
         <meta charset="UTF-8">
         <link rel="icon" href="./resources/fox_icon.png">
-        
+
         <script type="text/javascript" src="./lib/three.js-master/build/three.js"></script>
         <script type="text/javascript" src="./lib/physi.js"></script>
         <script src="./lib/tween.umd.js"></script>
 
         <script type="text/javascript" src="./variables.js"></script>
         <script type="module" src="./fox.js"></script>
-        <script type="module" src="./doodleJump.js"></script> 
+        <script type="module" src="./doodleJump.js"></script>
         <script type="module" src="./index.js"></script>
-        
+
+	<script type="text/javascript" src="./bg.js"></script>
+
         <script type="module">
             import {play} from "./index.js";
-            
-            document.getElementById("background").addEventListener("click", playGame);
+
+            document.getElementById("background").addEventListener("click", changeBg);
             document.getElementById("playGame").addEventListener("click", playGame);
             document.getElementById("about").addEventListener("click", about);
 
             function playGame() {
                 play();
             }
-            
+
             function about() {
                 window.location.href = 'about.html';
             }
-            
+
+            function changeBg(){
+                window.location.href = 'background.html';
+            }
+
         </script>
 
         <title>Foxy Jumper</title>
 
         <link rel="stylesheet" type="text/css" href="./style.css">
-        
+
+        <script>
+
+              var queryString = decodeURIComponent(window.location.search);
+              queryString = queryString.substring(1);
+              var queries = queryString.split("&");
+              if(queries[0].length > 1)
+                  backgroundChoice = parseInt(queries[0][3]);
+              else {
+                  backgroundChoice = 0;
+              }
+
+       </script>
+
     </head>
 
     <body>
@@ -42,11 +61,11 @@
                 <a id="background" class="link-one" href="#">Change Background</a>
             </div>
         </div>
-            
+
         <div class="background-two link-container">
-            <a id="playGame" class="link-two" href="#">PLAY <h>Foxy Jumper</h></a>
+            <a id="playGame" class="link-two" href="#">PLAY <h1>Foxy Jumper</h1></a>
         </div>
-            
+
         <div class="background-three link-container">
             <a id="about" class="link-three" href="#">About</a>
         </div>
