@@ -12,14 +12,14 @@
         <script type="module" src="./index.js"></script>
         
         <script type="module">
-            import {menu} from "./index.js";
+            import {play} from "./index.js";
             
-            document.getElementById("background").addEventListener("click", play);
-            document.getElementById("play").addEventListener("click", play);
-            document.getElementById("about").addEventListener("click", play);
+            document.getElementById("background").addEventListener("click", playGame);
+            document.getElementById("playGame").addEventListener("click", playGame);
+            document.getElementById("about").addEventListener("click", playGame);
 
-            function play() {
-                menu();
+            function playGame() {
+                play();
             }
             
         </script>
@@ -38,7 +38,7 @@
         </div>
             
         <div class="background-two link-container">
-            <a id="play" class="link-two" href="#">PLAY <h>Foxy Jumper</h></a>
+            <a id="playGame" class="link-two" href="#">PLAY <h>Foxy Jumper</h></a>
         </div>
             
         <div class="background-three link-container">

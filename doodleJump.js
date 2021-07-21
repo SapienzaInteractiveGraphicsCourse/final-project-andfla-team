@@ -260,7 +260,7 @@ const loader = {
         var texture = texLoader.load( this.assets.textures.wallLight, function ( texture ) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
-            texture.repeat.set( 400, 900 );//700 per wall1, 600 per le altre
+            texture.repeat.set( 5, 1500 );//700 per wall1, 600 per le altre
             texture.magFilter = THREE.LinearFilter;
             texture.minFilter = THREE.NearestMipmapLinearFilter;
 
@@ -292,7 +292,7 @@ const loader = {
 */
             var wallMaterial = new THREE.MeshStandardMaterial({
                 map: texture,
-                normalMap: texLoader.load(loader.assets.textures.wallLightNormal),
+                //normalMap: texLoader.load(loader.assets.textures.wallLightNormal),
                 roughnessMap: texLoader.load(loader.assets.textures.wallLightRoughness),
             });
             wall = new THREE.Mesh(geometry, wallMaterial, 0);

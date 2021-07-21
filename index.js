@@ -1,6 +1,6 @@
 import {startGame} from './doodleJump.js';
 
-function menu() {
+function play() {
     document.body.innerHTML = "";
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
@@ -34,8 +34,8 @@ function gameOver(score) {
     const menuButt = document.createElement("button");
     menuButt.setAttribute("class", "button");
     menuButt.innerText = "Back to menu";
-    menuButt.onclick = menu;
+    menuButt.onclick = location.href='index.html';        // TODO: menu
     gameOverDiv.appendChild(menuButt);
 }
 
-export {menu, gameOver};
+export {play, gameOver};
