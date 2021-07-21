@@ -44,10 +44,13 @@ h {
     color: white;
     text-align: center;
     background-color: #F35A08;
+    font-family: Courier, Verdana, Geneva, sans-serif;
+    
+    transition-duration: 0.4s;
 }
 
-.button: hover{
-  background-color: white;
+.button:hover {
+  background-color: #FFFFFF;
   color: black;
 }
 

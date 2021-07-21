@@ -437,7 +437,7 @@ function start() {
 
     const canvas = document.createElement("canvas");
     canvas.setAttribute("id", "canvasID");
-
+    
     const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
 
     scene.setGravity(new THREE.Vector3( 0, 0, 0 ));
@@ -467,14 +467,14 @@ function start() {
     let isFalling = false;
     let i = 0.1;
 
-    //initialize the score at each new game
+    // Score and text as sprite on threejs
     score = 0;
     const scoreDiv = document.createElement("div");
     scoreDiv.setAttribute("id", "score");
     document.body.appendChild(scoreDiv);
     
     const scoreText = document.createElement("h");
-
+    
     var animate = function (time) {
 
         // Resizes the canvas if the window size is changed
@@ -516,6 +516,7 @@ function start() {
             scoreText.innerText = "SCORE: " + score;
             scoreDiv.appendChild(scoreText);
         }
+        
         
 
         // Physijs collisions

@@ -33,7 +33,7 @@ function gameOver(score) {
 
     const menuButt = document.createElement("button");
     menuButt.setAttribute("class", "button");
-    menuButt.innerText = "Back to menu";
+    menuButt.innerText = "Go to menu";
     menuButt.onclick =  function() {
         window.location.href = 'index.html'
     };
