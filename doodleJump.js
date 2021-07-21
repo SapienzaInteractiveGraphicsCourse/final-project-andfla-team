@@ -443,6 +443,9 @@ function start() {
     let isFalling = false;
     let i = 0.1;
 
+    //initialize the score at each new game
+    score = 0;
+
     var animate = function (time) {
 
         // Resizes the canvas if the window size is changed
@@ -498,7 +501,13 @@ function start() {
             inputControls.keyboard = false;
 
             console.log("Final Score = " + score);
+
+            //Remove the scene at the end of the game
+            while(scene.children.length > 0){
+                  scene.remove(scene.children[0]);
+            }
             gameOver(score);
+            return;
         }
 
 	scene.simulate();

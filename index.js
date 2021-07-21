@@ -34,7 +34,7 @@ function gameOver(score) {
     const restart = document.createElement("button");
     restart.setAttribute("class", "game-button");
     restart.innerText = "Restart";
-    restart.onclick = newGame;
+    restart.onclick = startGame;
     gameOverDiv.appendChild(restart);
 
     const menuButt = document.createElement("button");

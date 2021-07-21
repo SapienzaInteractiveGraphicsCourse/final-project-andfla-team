@@ -45,4 +45,4 @@ var wall;
 var texLoader = new THREE.TextureLoader();
 var realPlatformMaterial;
 
-var score = 0;
+var score;
