@@ -66,8 +66,8 @@ const lights = {
     // Initializes the lights
     init: function(scene) {
 
-        this.ambientLight = new THREE.HemisphereLight(this.skyColor, this.groundColor, 1.0);
-        //scene.add(this.ambientLight);
+        this.ambientLight = new THREE.HemisphereLight(this.skyColor, this.groundColor, 0.1);
+        scene.add(this.ambientLight);
 
         const color = 0xFFFFFF;
         const light = new THREE.DirectionalLight(color, 1.0);
@@ -150,10 +150,27 @@ const loader = {
 
     assets: {
         textures: {
-            wall: "./resources/wall.jpg",
-            ground: "./resources/ground.jpg",
-            platform1: "./resources/platform_grass_block.jpg",
-            platform2: "./resources/platform_white.jpg",
+          wall:             "./resources/wall.jpg",
+          wallNormal:       "./resources/wall_normal.jpg",
+
+          ground:           "./resources/ground.jpg",
+          groundNormal:     "./resources/ground_normal.jpg",
+
+          platform1:        "./resources/platform_grass_block.jpg",
+          platform1Normal:  "./resources/platform_grass_normal.jpg",
+
+          platform2:        "./resources/legno_texture.jpg",
+          platform2Normal:  "./resources/legno_normal.jpg",
+
+          platform3:        "./resources/piastrelle.jpg",
+
+          platform4:        "./resources/platform_white.jpg",
+
+          platform5:        "./resources/wall_light.jpg",
+
+          wall1:            "./resources/scraper_texture_1.jpg",
+          wall1Normal:      "./resources/scraper_normal_1.jpg",
+          wall1Roughness:   "./resources/scraper_roughness_1.jpg",
         },
         objects: {
             foxGltf: "./resources/simple_fox/scene.gltf",
@@ -240,19 +257,22 @@ const loader = {
     },
 
     loadWall: function(scene) {
-        var loader = new THREE.TextureLoader();
 
-        var texture = loader.load( this.assets.textures.wall, function ( texture ) {
+        //TODO: SCEGLIERE:Current options: wall,wall1,platform1,platform5
+        var texture = texLoader.load( this.assets.textures.wall1, function ( texture ) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
-            texture.repeat.set( 10, 1000 );
-            //texture.repeat.set( 10, 10 );
+            texture.repeat.set( 4, 700 );//700 per wall1, 600 per le altre
+            texture.magFilter = THREE.LinearFilter;
+            texture.minFilter = THREE.NearestMipmapLinearFilter;
 
             const geometry = new THREE.PlaneGeometry( 80, 10000 );
             geometry.translate( 0, 0, -2.1);
 
-            var wallMaterial = new THREE.MeshBasicMaterial({
-                map: texture
+            var wallMaterial = new THREE.MeshStandardMaterial({
+                map: texture,
+                normalMap: texLoader.load(loader.assets.textures.wall1Normal),
+                roughnessMap: texLoader.load(loader.assets.textures.wall1Roughness),
             });
             wall = new THREE.Mesh(geometry, wallMaterial, 0);
             scene.add(wall);
@@ -261,16 +281,15 @@ const loader = {
     },
 
     loadGround: function(scene) {
-        var loader = new THREE.TextureLoader();
 
-        var texture = loader.load( this.assets.textures.ground, function ( texture ) {
+        var texture = texLoader.load( this.assets.textures.ground, function ( texture ) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
             texture.repeat.set( 9, 9 );
 
             const geometry = new THREE.PlaneGeometry( window.innerWidth / 2, window.innerHeight );
 
-            var groundMaterial = new THREE.MeshBasicMaterial({
+            var groundMaterial = new THREE.MeshStandardMaterial({
                 map: texture
             });
             var ground = new THREE.Mesh(geometry, groundMaterial, 0);
@@ -282,6 +301,47 @@ const loader = {
 
     loadPlatform: function(scene) {
         // Load firsts platforms
+/*
+        //Option1: Mattoncini con erba
+        var texture = texLoader.load(loader.assets.textures.platform1);
+        texture.magFilter = THREE.LinearFilter;
+        texture.minFilter = THREE.LinearMipmapLinearFilter;
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+        realPlatformMaterial = new THREE.MeshStandardMaterial({
+            map: texture,
+            //normalMap: texLoader.load(loader.assets.textures.platform1Normal)
+          },
+            .8, // high friction
+            .3 // low restitution
+        );
+
+        //Option2: wooden platforms
+        var texture = texLoader.load(loader.assets.textures.platform2);
+        texture.magFilter = THREE.LinearFilter;
+        texture.minFilter = THREE.LinearMipmapLinearFilter;
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+        realPlatformMaterial = new THREE.MeshStandardMaterial({
+            map: texture,
+            normalMap: texLoader.load(loader.assets.textures.platform2Normal)},
+            .8, // high friction
+            .3 // low restitution
+        );
+*/
+
+        //Option3: Piastrelle
+        var texture = texLoader.load(loader.assets.textures.platform3);
+        texture.magFilter = THREE.LinearFilter;
+        texture.minFilter = THREE.LinearMipmapLinearFilter;
+        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+
+        realPlatformMaterial = new THREE.MeshStandardMaterial({
+            map: texture},
+            //.8, // high friction
+            //.3 // low restitution
+        );
+
         for (platformID = 0; platformID < platforms.number; platformID++) {
             drawPlatform(platformID);
         }
@@ -293,9 +353,9 @@ function drawPlatform(platformID) {
 
     platform.ID = platformID;
     platform.generate(camera.visible_width/4, 20);
-    
+
     var boxPlatform = PLATFORM.createBoxWithListener(platform);
-    
+
     platforms[platformID] = platform;
     boxPlatforms[platformID] = boxPlatform;
 }
@@ -355,7 +415,7 @@ function start() {
     const canvas = document.createElement("canvas");
     canvas.setAttribute("id", "canvasID");
     const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
-    
+
     scene.setGravity(new THREE.Vector3( 0, 0, 0 ));
 
     renderer.setSize(window.innerWidth / 2, window.innerHeight);
@@ -384,57 +444,64 @@ function start() {
     let i = 0.1;
 
     var animate = function (time) {
+
         // Resizes the canvas if the window size is changed
         if (resizeRendererToDisplaySize(renderer)) {
             camera.obj.aspect = canvas.clientWidth / canvas.clientHeight;
             camera.obj.updateProjectionMatrix();
         }
         TWEEN.update(time);
-        
+
         // Update animations
         groupLeft.update();
         groupRight.update();
         groupJumping.update();
         groupRotating.update();
         groupFalling.update();
-        
+
         // Initial jump
         if(fox.position.y + 1 <= 0){
             FOX.jump(fox);
         }
 
         FOX.changeBoxPosition(fox);
-        
+
         // Move camera if the fox pass half of the screen and generate new platform
         let simpleJumpValue = 5;
         if(fox.position.y >= camera.obj.position.y) {
             camera.up(simpleJumpValue + fox.position.y);
-            
+
             platforms.pop();
             boxPlatforms.pop();
-            
+
             platformID++;
             drawPlatform(platformID);
         }
-        
+
+        //Update score:
+        if (fox.position.y > score)
+            score = Math.floor(fox.position.y);
+
+
         // Physijs collisions
         scene.simulate();
-        
+
         // Game over
         if( Math.abs(fox.position.y - camera.obj.position.y)  >= center_value + 6) {
             groupJumping.removeAll();
             groupLeft.removeAll();
             groupRight.removeAll();
             groupRotating.removeAll();
-            
+
             FOX.stopFallAnimation(fox);
             inputControls.isMoving = 0;
             inputControls.keyboard = false;
-            
-            var score = 20000000000000; //TODO: fare punteggio
+
+            console.log("Final Score = " + score);
             gameOver(score);
         }
 
+	scene.simulate();
         requestAnimationFrame(animate);
         renderer.render(scene, camera.obj);
     };

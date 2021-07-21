@@ -21,13 +21,13 @@ function gameOver(score) {
     window.onfocus = "";
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
-    
+
     const gameOverDiv = document.createElement("div");
     gameOverDiv.setAttribute("id", "game-over");
     document.body.appendChild(gameOverDiv);
 
     const gameOverText = document.createElement("h");
-    gameOverText.innerText = "GAME OVER";
+    gameOverText.innerText = "GAME OVER \n FINAL SCORE: " + score;
     gameOverDiv.appendChild(gameOverText);
 
     // TODO: sistemare

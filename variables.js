@@ -34,14 +34,15 @@ var groupRight;
 var groupJumping;
 var groupRotating;
 var groupFalling;
+var isFalling = false;
+
 
 var box;
 var foxBox;
-
 var platforms = [];
 var boxPlatforms = [];
-
 var wall;
+var texLoader = new THREE.TextureLoader();
+var realPlatformMaterial;
 
-
-var isFalling = false;
+var score = 0;
