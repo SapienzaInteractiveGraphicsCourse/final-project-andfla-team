@@ -4,26 +4,20 @@ function menu() {
     document.body.innerHTML = "";
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
-
-    const title = document.createElement("h");
-    title.innerText = "Doodle Jump";
-    document.body.appendChild(title);
-
-    const startButton = document.createElement("button");
-    startButton.setAttribute("class", "menu-button");
-    startButton.innerText = "Start";
-    startButton.onclick = startGame;
-    document.body.appendChild(startButton);
+    
+    startGame();
 }
 
+
 function gameOver(score) {
+    document.body.innerHTML = "";
     window.onblur = "";
     window.onfocus = "";
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
 
     const gameOverDiv = document.createElement("div");
-    gameOverDiv.setAttribute("id", "game-over");
+    gameOverDiv.setAttribute("id", "gameOver");
     document.body.appendChild(gameOverDiv);
 
     const gameOverText = document.createElement("h");
@@ -32,15 +26,15 @@ function gameOver(score) {
 
     // TODO: sistemare
     const restart = document.createElement("button");
-    restart.setAttribute("class", "game-button");
+    restart.setAttribute("class", "button");
     restart.innerText = "Restart";
     restart.onclick = startGame;
     gameOverDiv.appendChild(restart);
 
     const menuButt = document.createElement("button");
-    menuButt.setAttribute("class", "game-button");
+    menuButt.setAttribute("class", "button");
     menuButt.innerText = "Back to menu";
-    //menuButt.onclick = menu;
+    menuButt.onclick = menu;
     gameOverDiv.appendChild(menuButt);
 }
 

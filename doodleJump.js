@@ -250,10 +250,6 @@ const loader = {
             }
         );
 
-        manager.onLoad = function() {
-            this.loaded = true;
-            loader.onLoad();
-        };
     },
 
     loadWall: function(scene) {
@@ -301,7 +297,6 @@ const loader = {
 
     loadPlatform: function(scene) {
         // Load firsts platforms
-/*
         //Option1: Mattoncini con erba
         var texture = texLoader.load(loader.assets.textures.platform1);
         texture.magFilter = THREE.LinearFilter;
@@ -315,6 +310,7 @@ const loader = {
             .8, // high friction
             .3 // low restitution
         );
+/*
 
         //Option2: wooden platforms
         var texture = texLoader.load(loader.assets.textures.platform2);
@@ -329,7 +325,7 @@ const loader = {
             .3 // low restitution
         );
 */
-
+/*
         //Option3: Piastrelle
         var texture = texLoader.load(loader.assets.textures.platform3);
         texture.magFilter = THREE.LinearFilter;
@@ -341,6 +337,7 @@ const loader = {
             //.8, // high friction
             //.3 // low restitution
         );
+*/
 
         for (platformID = 0; platformID < platforms.number; platformID++) {
             drawPlatform(platformID);
@@ -414,6 +411,7 @@ function start() {
 
     const canvas = document.createElement("canvas");
     canvas.setAttribute("id", "canvasID");
+
     const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
 
     scene.setGravity(new THREE.Vector3( 0, 0, 0 ));
@@ -445,6 +443,11 @@ function start() {
 
     //initialize the score at each new game
     score = 0;
+    const scoreDiv = document.createElement("div");
+    scoreDiv.setAttribute("id", "score");
+    document.body.appendChild(scoreDiv);
+    
+    const scoreText = document.createElement("h");
 
     var animate = function (time) {
 
@@ -482,9 +485,12 @@ function start() {
         }
 
         //Update score:
-        if (fox.position.y > score)
+        if (fox.position.y > score) {
             score = Math.floor(fox.position.y);
-
+            scoreText.innerText = "SCORE: " + score;
+            scoreDiv.appendChild(scoreText);
+        }
+        
 
         // Physijs collisions
         scene.simulate();
@@ -543,8 +549,14 @@ function startGame() {
         loader.loadWall(scene);
         loader.loadGround(scene);
         loader.loadFox(scene);
+        
         loader.onLoad = start;
+        
+        manager.onLoad = function() {
+            this.loaded = true;
+            loader.onLoad();
+        };
     }
 }
 
-export {startGame};
+export{startGame};
