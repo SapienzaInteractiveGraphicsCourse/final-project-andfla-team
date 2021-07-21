@@ -255,51 +255,79 @@ const loader = {
     },
 
     loadWall: function(scene) {
+        var texture;
 
-        //TODO: SCEGLIERE:Current options: wall,wall1,platform1,platform5
-        var texture = texLoader.load( this.assets.textures.wallLight, function ( texture ) {
-            texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-            texture.offset.set( 0, 0 );
-            texture.repeat.set( 5, 1500 );//700 per wall1, 600 per le altre
-            texture.magFilter = THREE.LinearFilter;
-            texture.minFilter = THREE.NearestMipmapLinearFilter;
+        //Skyscraper
+        if (backgroundChoice == 0){
+            texture = texLoader.load( this.assets.textures.wall1, function ( texture ) {
+                texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+                texture.offset.set( 0, 0 );
+                texture.repeat.set( 4, 700 );//700 per wall1, 600 per le altre
+                texture.magFilter = THREE.LinearFilter;
+                texture.minFilter = THREE.NearestMipmapLinearFilter;
 
-            const geometry = new THREE.PlaneGeometry( 80, 10000 );
-            geometry.translate( 0, 0, -2.1);
+                const geometry = new THREE.PlaneGeometry( 80, 10000 );
+                geometry.translate( 0, 0, -2.1);
 
-/*
-            var wallMaterial = new THREE.MeshStandardMaterial({
-                map: texture,
-                normalMap: texLoader.load(loader.assets.textures.wall1Normal),
-                roughnessMap: texLoader.load(loader.assets.textures.wall1Roughness),
+                var wallMaterial = new THREE.MeshStandardMaterial({
+                    map: texture,
+                    normalMap: texLoader.load(loader.assets.textures.wall1Normal),
+                    roughnessMap: texLoader.load(loader.assets.textures.wall1Roughness),
+                });
+                wall = new THREE.Mesh(geometry, wallMaterial, 0);
+                scene.add(wall);
+
+           });
+        }
+
+        //bricks wall
+        else if(backgroundChoice == 1 ){
+            texture = texLoader.load( this.assets.textures.wallLight, function ( texture ) {
+                  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+                  texture.offset.set( 0, 0 );
+                  texture.repeat.set( 5, 1500 );//700 per wall1, 600 per le altre
+                  texture.magFilter = THREE.LinearFilter;
+                  texture.minFilter = THREE.NearestMipmapLinearFilter;
+
+                  const geometry = new THREE.PlaneGeometry( 80, 10000 );
+                  geometry.translate( 0, 0, -2.1);
+
+                  var wallMaterial = new THREE.MeshStandardMaterial({
+                      map: texture,
+                      //normalMap: texLoader.load(loader.assets.textures.wallLightNormal),
+                      roughnessMap: texLoader.load(loader.assets.textures.wallLightRoughness),
+                  });
+                  wall = new THREE.Mesh(geometry, wallMaterial, 0);
+                  scene.add(wall);
+
+              });
+        }
+        //Wooden wall
+        else if(backgroundChoice == 2 ){
+            texture = texLoader.load( this.assets.textures.wall, function ( texture ) {
+                texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+                texture.offset.set( 0, 0 );
+                texture.repeat.set( 5, 1500 );//700 per wall1, 600 per le altre
+                texture.magFilter = THREE.LinearFilter;
+                texture.minFilter = THREE.NearestMipmapLinearFilter;
+
+                const geometry = new THREE.PlaneGeometry( 80, 10000 );
+                geometry.translate( 0, 0, -2.1);
+
+                var wallMaterial = new THREE.MeshStandardMaterial({
+                    map: texture,
+                    normalMap: texLoader.load(loader.assets.textures.wallNormal),
+                    //roughnessMap: texLoader.load(loader.assets.textures.wallRoughness),
+                });
+                wall = new THREE.Mesh(geometry, wallMaterial, 0);
+                scene.add(wall);
+
             });
-            wall = new THREE.Mesh(geometry, wallMaterial, 0);
-            scene.add(wall);
-*/
 
-/* Wall Wood
-            var wallMaterial = new THREE.MeshStandardMaterial({
-                map: texture,
-                normalMap: texLoader.load(loader.assets.textures.wallNormal),
-                roughnessMap: texLoader.load(loader.assets.textures.wallRoughness),
-            });
-            wall = new THREE.Mesh(geometry, wallMaterial, 0);
-            scene.add(wall);
-*/
-
-/* Wall Light
-
-*/
-            var wallMaterial = new THREE.MeshStandardMaterial({
-                map: texture,
-                //normalMap: texLoader.load(loader.assets.textures.wallLightNormal),
-                roughnessMap: texLoader.load(loader.assets.textures.wallLightRoughness),
-            });
-            wall = new THREE.Mesh(geometry, wallMaterial, 0);
-            scene.add(wall);
-
-        } );
-
+        }
+        else {
+          console.log("No bg selected;")
+        }
     },
 
     loadGround: function(scene) {
@@ -437,7 +465,7 @@ function start() {
 
     const canvas = document.createElement("canvas");
     canvas.setAttribute("id", "canvasID");
-    
+
     const renderer = new THREE.WebGLRenderer({canvas, antialias: true});
 
     scene.setGravity(new THREE.Vector3( 0, 0, 0 ));
@@ -472,9 +500,9 @@ function start() {
     const scoreDiv = document.createElement("div");
     scoreDiv.setAttribute("id", "score");
     document.body.appendChild(scoreDiv);
-    
+
     const scoreText = document.createElement("h");
-    
+
     var animate = function (time) {
 
         // Resizes the canvas if the window size is changed
@@ -516,8 +544,8 @@ function start() {
             scoreText.innerText = "SCORE: " + score;
             scoreDiv.appendChild(scoreText);
         }
-        
-        
+
+
 
         // Physijs collisions
         scene.simulate();
@@ -576,9 +604,9 @@ function startGame() {
         loader.loadWall(scene);
         loader.loadGround(scene);
         loader.loadFox(scene);
-        
+
         loader.onLoad = start;
-        
+
         manager.onLoad = function() {
             this.loaded = true;
             loader.onLoad();
