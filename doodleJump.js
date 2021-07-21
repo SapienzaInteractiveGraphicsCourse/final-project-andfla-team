@@ -157,7 +157,7 @@ const loader = {
           groundNormal:     "./resources/ground_normal.jpg",
 
           platform1:        "./resources/platform_grass_block.jpg",
-          platform1Normal:  "./resources/platform_grass_normal.jpg",
+          platform1Roughness:  "./resources/platform_grass_roughness.jpg",
 
           platform2:        "./resources/legno_texture.jpg",
           platform2Normal:  "./resources/legno_normal.jpg",
@@ -166,7 +166,9 @@ const loader = {
 
           platform4:        "./resources/platform_white.jpg",
 
-          platform5:        "./resources/wall_light.jpg",
+          wallLight:        "./resources/wall_light.jpg",
+          wallLightNormal:           "./resources/wall_light_normal.jpg",
+          wallLightRoughness:        "./resources/wall_light_roughness.jpg",
 
           wall1:            "./resources/scraper_texture_1.jpg",
           wall1Normal:      "./resources/scraper_normal_1.jpg",
@@ -255,16 +257,17 @@ const loader = {
     loadWall: function(scene) {
 
         //TODO: SCEGLIERE:Current options: wall,wall1,platform1,platform5
-        var texture = texLoader.load( this.assets.textures.wall1, function ( texture ) {
+        var texture = texLoader.load( this.assets.textures.wallLight, function ( texture ) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
-            texture.repeat.set( 4, 700 );//700 per wall1, 600 per le altre
+            texture.repeat.set( 400, 900 );//700 per wall1, 600 per le altre
             texture.magFilter = THREE.LinearFilter;
             texture.minFilter = THREE.NearestMipmapLinearFilter;
 
             const geometry = new THREE.PlaneGeometry( 80, 10000 );
             geometry.translate( 0, 0, -2.1);
 
+/*
             var wallMaterial = new THREE.MeshStandardMaterial({
                 map: texture,
                 normalMap: texLoader.load(loader.assets.textures.wall1Normal),
@@ -272,6 +275,29 @@ const loader = {
             });
             wall = new THREE.Mesh(geometry, wallMaterial, 0);
             scene.add(wall);
+*/
+
+/* Wall Wood
+            var wallMaterial = new THREE.MeshStandardMaterial({
+                map: texture,
+                normalMap: texLoader.load(loader.assets.textures.wallNormal),
+                roughnessMap: texLoader.load(loader.assets.textures.wallRoughness),
+            });
+            wall = new THREE.Mesh(geometry, wallMaterial, 0);
+            scene.add(wall);
+*/
+
+/* Wall Light
+
+*/
+            var wallMaterial = new THREE.MeshStandardMaterial({
+                map: texture,
+                normalMap: texLoader.load(loader.assets.textures.wallLightNormal),
+                roughnessMap: texLoader.load(loader.assets.textures.wallLightRoughness),
+            });
+            wall = new THREE.Mesh(geometry, wallMaterial, 0);
+            scene.add(wall);
+
         } );
 
     },
@@ -305,7 +331,7 @@ const loader = {
 
         realPlatformMaterial = new THREE.MeshStandardMaterial({
             map: texture,
-            //normalMap: texLoader.load(loader.assets.textures.platform1Normal)
+            roughnessMap: texLoader.load(loader.assets.textures.platform1Roughness),
           },
             .8, // high friction
             .3 // low restitution
