@@ -34,7 +34,9 @@ function gameOver(score) {
     const menuButt = document.createElement("button");
     menuButt.setAttribute("class", "button");
     menuButt.innerText = "Back to menu";
-    menuButt.onclick = location.href='index.html';        // TODO: menu
+    menuButt.onclick =  function() {
+        window.location.href = 'index.html'
+    };
     gameOverDiv.appendChild(menuButt);
 }
 
