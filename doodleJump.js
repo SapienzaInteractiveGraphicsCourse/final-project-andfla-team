@@ -278,6 +278,7 @@ const loader = {
             trap = gltf.scene;
             trap.name = "trap";
             trap.position.set(0, prevHeight+20, 0);            //TODO: change position
+            console.log("x prima: "+trap.position.x);
             trap.scale.set(2, 2, 1);
 
             trap.traverse(function (child) {
@@ -613,6 +614,11 @@ function start() {
         
         FOX.changeBoxPosition(fox);
         TRAP.changeBoxPosition(trap);
+        
+        if (score == 35) {
+            trap.position.y = fox.position.y + 35;
+            trap.position.x = (fox.position.x + 40);
+        }
 
         // Move camera if the fox pass half of the screen and generate new platform
         let simpleJumpValue = 5;
@@ -625,7 +631,6 @@ function start() {
             platformID++;
             drawPlatform(platformID);
             
-            var rand = UTILS.generateRandomInt(0, 100)/100;
             
 /*            if (score>= 0 && score <= 200 && rand < difficulty_prob1)
                 trap.position.y = fox.position.y + 100;
