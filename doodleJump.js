@@ -3,6 +3,7 @@ import {GLTFLoader} from "./lib/three.js-master/examples/jsm/loaders/GLTFLoader.
 import {OrbitControls} from 'https://threejsfundamentals.org/threejs/resources/threejs/r127/examples/jsm/controls/OrbitControls.js';
 
 import * as FOX from "./fox.js";
+import * as TRAP from "./trap.js";
 import * as PLATFORM from "./platform.js";
 import {platform} from './platform.js';
 import * as UTILS from './utils.js';
@@ -17,6 +18,7 @@ const manager = new THREE.LoadingManager();
 //const manager_platform = new THREE.LoadingManager();
 const center_value = 10;
 
+var trap;
 var fox;
 var foxInitialPosition = {
     x: 0,
@@ -178,12 +180,17 @@ const loader = {
         },
         objects: {
             foxGltf: "./resources/simple_fox/scene.gltf",
-            robot: "./resources/robot/scene.gltf",
+            trapGltf: "./resources/trap/scene.gltf",
         },
         sounds: {
             jumpSnd: "./resources/sounds/jump.mp3" ,
             jumpSnd1:"./resources/sounds/jump1.mp3",
             jumpSnd2:"./resources/sounds/click.mp3",
+            
+            trapSnd:"./resources/sounds/trap_hit.mp3",
+            
+            fallSnd1:"./resources/sounds/fall1.mp3",
+            fallSnd2:"./resources/sounds/fall2.mp3",
 
             gameOverSnd:"./resources/sounds/gameOver.mp3",
             gameOpenerSnd:"./resources/sounds/gameOpener.mp3",
@@ -263,6 +270,45 @@ const loader = {
         );
 
     },
+    
+    loadTrap: function(scene) {
+        var gltfLoader = new GLTFLoader(manager);
+
+        gltfLoader.load(this.assets.objects.trapGltf, (gltf) => {
+            trap = gltf.scene;
+            trap.name = "trap";
+            trap.position.set(0, prevHeight+20, 0);            //TODO: change position
+            trap.scale.set(2, 2, 1);
+
+            trap.traverse(function (child) {
+              if (child instanceof THREE.Mesh) {
+                child.castShadow = true;
+                child.receiveShadow = true;
+              }
+            });
+            trap.castShadow = true;
+            trap.receiveShadow = true;
+
+            // Torso
+            trapRoot = trap.getObjectByName(TRAP.trap_dic.Root);
+
+            scene.add(trap);
+            
+            TRAP.collisionListener(trap);
+            TRAP.changeBoxPosition(trap);
+            TRAP.move(trap);
+            TRAP.rotate(trap);
+        },
+            (xhr) => {
+                console.log((xhr.loaded / xhr.total * 100) + '% loaded')
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
+
+    },
+
 
     loadWall: function(scene) {
         var texture;
@@ -418,6 +464,15 @@ const loader = {
 
         jumpSound2 = new Audio(loader.assets.sounds.jumpSnd2);
         jumpSound2.volume = 0.5;
+        
+        trapSound = new Audio(loader.assets.sounds.trapSnd);
+        trapSound.volume = 0.5;
+        
+        fallSound1 = new Audio(loader.assets.sounds.fallSnd1);
+        fallSound1.volume = 0.5;
+
+        fallSound2 = new Audio(loader.assets.sounds.fallSnd2);
+        fallSound2.volume = 0.5;
 
         gameOverSound = new Audio(loader.assets.sounds.gameOverSnd);
         gameOverSound.volume = 0.5;
@@ -555,19 +610,28 @@ function start() {
                 gameOpenerSound.play();
             FOX.jump(fox);
         }
-
+        
         FOX.changeBoxPosition(fox);
+        TRAP.changeBoxPosition(trap);
 
         // Move camera if the fox pass half of the screen and generate new platform
         let simpleJumpValue = 5;
         if(fox.position.y >= camera.obj.position.y) {
             camera.up(simpleJumpValue + fox.position.y);
 
-            platforms.pop();
-            boxPlatforms.pop();
+            //platforms.pop();
+            //boxPlatforms.pop();
 
             platformID++;
             drawPlatform(platformID);
+            
+            var rand = UTILS.generateRandomInt(0, 100)/100;
+            
+/*            if (score>= 0 && score <= 200 && rand < difficulty_prob1)
+                trap.position.y = fox.position.y + 100;
+            /*if (score >= 200 && rand < difficulty_prob2)
+                loader.loadTrap(scene);
+              */  
         }
 
         //Update score:
@@ -640,6 +704,7 @@ function startGame() {
         loader.loadWall(scene);
         loader.loadGround(scene);
         loader.loadFox(scene);
+        loader.loadTrap(scene);
         loader.loadSounds();
 
         loader.onLoad = start;

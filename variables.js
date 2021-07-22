@@ -1,5 +1,6 @@
 var scene;
 
+// Fox model
 var root;
 var hip;
 
@@ -36,13 +37,21 @@ var groupRotating;
 var groupFalling;
 var isFalling = false;
 
+// Trap model
+var trapRoot;
+var trapBoxID;
+
 var simpleJumpValue = 15;
 var simpleFallValue = -30;
 
+// Sound
 var soundOn = true;
 var jumpSound;
 var jumpSound1;
 var jumpSound2;
+var trapSound;
+var fallSound1;
+var fallSound2;
 var gameOverSound;
 var gameOpenerSound;
 
@@ -56,5 +65,9 @@ var realPlatformMaterial;
 var prevHeight = 0;
 
 var backgroundChoice = 0;
+
+// Probability
+var difficulty_prob1 = 0.01;
+var difficulty_prob2 = 0.25;
 
 var score;

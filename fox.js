@@ -350,7 +350,16 @@ function collisionListener(fox) {
     foxBox.setCcdMotionThreshold(1);
     scene.add(foxBox);
 
-    foxBox.addEventListener("collision", function() {
+    foxBox.addEventListener("collision", function(other_object, relative_velocity, relative_rotation, contact_normal) {
+        if (other_object._physijs.id == trapBoxID)
+        {
+            if (soundOn) {
+                trapSound.play();
+                fallSound1.play();
+            }
+            fall(fox);
+        }
+        
         if (isFalling){
             if (soundOn)
                 jumpSound.play();
