@@ -66,7 +66,7 @@ var prevHeight = 0;
 
 var backgroundChoice = 0;
 
-// Probability
+// Hardness
 var difficulty = 2;    //2 = easy, 1.5 = medium, 1.25 = hard
 
 var score;

@@ -12,10 +12,11 @@ import {gameOver} from './index.js';
 Physijs.scripts.worker = "./lib/physijs_worker.js";
 Physijs.scripts.ammo = "./ammo.js";
 
+
 scene = new Physijs.Scene();
 texLoader = new THREE.TextureLoader();
 const manager = new THREE.LoadingManager();
-//const manager_platform = new THREE.LoadingManager();
+
 const center_value = 10;
 
 var trap;
@@ -69,7 +70,6 @@ const lights = {
 
     // Initializes the lights
     init: function(scene) {
-
         this.ambientLight = new THREE.HemisphereLight(this.skyColor, this.groundColor, 0.1);
         scene.add(this.ambientLight);
 
@@ -88,19 +88,6 @@ const backgroundAndFog = {
         scene.background = new THREE.Color(this.color);
         scene.fog = new THREE.Fog(scene.background, ground.depth, ground.depth+20);
     },
-    // Updates the color of the background and of the fog
-    update: function(scene) {
-        if (camera.obj.position.y>500) {
-            const newColor = new THREE.Color(this.color).lerp(new THREE.Color(0 ,0, 0), (camera.obj.position.y-500)/500);
-
-            if (newColor.r<0) newColor.r = 0;
-            if (newColor.g<0) newColor.g = 0;
-            if (newColor.b<0) newColor.b = 0;
-
-            scene.background = newColor;
-            scene.fog.color = scene.background;
-        }
-    }
 }
 
 // Ground
@@ -124,29 +111,6 @@ const ground = {
 
         scene.add(this.obj);
     },
-
-    // Updates the ground matrices
-    update: function() {
-        this.obj.updateMatrix();
-        this.obj.updateMatrixWorld();
-        this.plane.applyMatrix4(this.obj.matrixWorld);
-    }
-}
-
-const cube = {
-    obj: null,
-    init: function(scene) {
-        // Object
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshStandardMaterial();
-        material.color = new THREE.Color(0xff0000);
-        material.metalness = 0.7;
-        material.roughness = 0.1;
-
-
-        this.obj = new THREE.Mesh( geometry, material );
-        scene.add( this.obj );
-    }
 }
 
 const loader = {
@@ -154,29 +118,29 @@ const loader = {
 
     assets: {
         textures: {
-          wall:             "./resources/wall.jpg",
-          wallNormal:       "./resources/wall_normal.jpg",
+            wall:             "./resources/wall.jpg",
+            wallNormal:       "./resources/wall_normal.jpg",
 
-          ground:           "./resources/ground.jpg",
-          groundNormal:     "./resources/ground_normal.jpg",
+            ground:           "./resources/ground.jpg",
+            groundNormal:     "./resources/ground_normal.jpg",
 
-          platform1:        "./resources/platform_grass_block.jpg",
-          platform1Roughness:  "./resources/platform_grass_roughness.jpg",
+            platform1:        "./resources/platform_grass_block.jpg",
+            platform1Roughness:  "./resources/platform_grass_roughness.jpg",
 
-          platform2:        "./resources/legno_texture.jpg",
-          platform2Normal:  "./resources/legno_normal.jpg",
+            platform2:        "./resources/legno_texture.jpg",
+            platform2Normal:  "./resources/legno_normal.jpg",
 
-          platform3:        "./resources/piastrelle.jpg",
+            platform3:        "./resources/piastrelle.jpg",
 
-          platform4:        "./resources/platform_white.jpg",
+            platform4:        "./resources/platform_white.jpg",
 
-          wallLight:        "./resources/wall_light.jpg",
-          wallLightNormal:           "./resources/wall_light_normal.jpg",
-          wallLightRoughness:        "./resources/wall_light_roughness.jpg",
+            wallLight:        "./resources/wall_light.jpg",
+            wallLightNormal:           "./resources/wall_light_normal.jpg",
+            wallLightRoughness:        "./resources/wall_light_roughness.jpg",
 
-          wall1:            "./resources/scraper_texture_1.jpg",
-          wall1Normal:      "./resources/scraper_normal_1.jpg",
-          wall1Roughness:   "./resources/scraper_roughness_1.jpg",
+            wall1:            "./resources/scraper_texture_1.jpg",
+            wall1Normal:      "./resources/scraper_normal_1.jpg",
+            wall1Roughness:   "./resources/scraper_roughness_1.jpg",
         },
         objects: {
             foxGltf: "./resources/simple_fox/scene.gltf",
@@ -255,8 +219,6 @@ const loader = {
             root.rotation.z = (90 * Math.PI) / 180;
             root.rotation.y = (-3.5 * Math.PI) / 180;
 
-            //dirLight.target = fox;
-
             scene.add(fox);
             FOX.collisionListener(fox);
             FOX.changeBoxPosition(fox);
@@ -270,15 +232,15 @@ const loader = {
         );
 
     },
-
+    
+    // Enemy
     loadTrap: function(scene) {
         var gltfLoader = new GLTFLoader(manager);
 
         gltfLoader.load(this.assets.objects.trapGltf, (gltf) => {
             trap = gltf.scene;
             trap.name = "trap";
-            trap.position.set(20, prevHeight+20, 0);            //TODO: change position
-            console.log("x prima: "+trap.position.x);
+            trap.position.set(20, prevHeight+20, 0);
             trap.scale.set(2, 2, 1);
 
             trap.traverse(function (child) {
@@ -310,11 +272,10 @@ const loader = {
 
     },
 
-
     loadWall: function(scene) {
         var texture;
 
-        //Skyscraper
+        // Skyscraper
         if (backgroundChoice == 0){
             texture = texLoader.load( this.assets.textures.wall1, function ( texture ) {
                 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -337,7 +298,7 @@ const loader = {
            });
         }
 
-        //bricks wall
+        // Bricks wall
         else if(backgroundChoice == 1 ){
             texture = texLoader.load( this.assets.textures.wallLight, function ( texture ) {
                   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -359,7 +320,7 @@ const loader = {
 
               });
         }
-        //Wooden wall
+        // Wooden wall
         else if(backgroundChoice == 2 ){
             texture = texLoader.load( this.assets.textures.wall, function ( texture ) {
                 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -388,7 +349,6 @@ const loader = {
     },
 
     loadGround: function(scene) {
-
         var texture = texLoader.load( this.assets.textures.ground, function ( texture ) {
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.offset.set( 0, 0 );
@@ -422,7 +382,6 @@ const loader = {
             .3 // low restitution
         );
 /*
-
         //Option2: wooden platforms
         var texture = texLoader.load(loader.assets.textures.platform2);
         texture.magFilter = THREE.LinearFilter;
@@ -454,7 +413,7 @@ const loader = {
             drawPlatform(platformID);
         }
     },
-
+    
     loadSounds: function(scene){
 
         jumpSound = new Audio(loader.assets.sounds.jumpSnd);
@@ -496,6 +455,7 @@ function drawPlatform(platformID) {
     boxPlatforms[platformID] = boxPlatform;
 }
 
+// Handle input events
 const inputControls = {
     isMoving: 0,        // 0 not moving, 1 right, -1 left
     isRightFacing: true,
@@ -503,7 +463,7 @@ const inputControls = {
 
     // Initializes the controls listeners
     init: function() {
-        this.isMoving = 0;//unused
+        this.isMoving = 0;
         this.isRightFacing = true;
         this.keyboard = true;
     },
@@ -637,13 +597,6 @@ function start() {
 
             platformID++;
             drawPlatform(platformID);
-
-
-/*            if (score>= 0 && score <= 200 && rand < difficulty_prob1)
-                trap.position.y = fox.position.y + 100;
-            /*if (score >= 200 && rand < difficulty_prob2)
-                loader.loadTrap(scene);
-              */
         }
 
         //Update score:
@@ -652,8 +605,6 @@ function start() {
             scoreText.innerText = "SCORE: " + score;
             scoreDiv.appendChild(scoreText);
         }
-
-
 
         // Physijs collisions
         scene.simulate();
@@ -683,7 +634,7 @@ function start() {
             return;
         }
 
-	scene.simulate();
+        scene.simulate();
         requestAnimationFrame(animate);
         renderer.render(scene, camera.obj);
     };
@@ -704,9 +655,7 @@ function resizeRendererToDisplaySize(renderer) {
     return needResize;
 }
 
-// Before starting the game we check if the assets have been already loaded
-// if not we load them, after that the game is started
-
+// Before starting the game check if the assets have been already loaded
 function startGame() {
     if(loader.loaded){
         start();

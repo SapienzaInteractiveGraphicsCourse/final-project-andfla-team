@@ -144,7 +144,6 @@ function firstJump(fox) {
         .easing(TWEEN.Easing.Quadratic.In)
         .onUpdate(function () {
             isFalling=true; })
-        //.delay(600)
 
     firstJumping.chain(firstFalling);
 }
@@ -362,7 +361,7 @@ function collisionListener(fox) {
         
         if (isFalling){
             if (soundOn)
-                jumpSound.play();
+                jumpSound1.play();
             jump(fox);
         }
     });

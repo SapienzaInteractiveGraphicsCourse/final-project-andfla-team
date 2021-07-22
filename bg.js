@@ -1,5 +1,3 @@
-//import {startGame} from './doodleJump.js';
-
 function choiceFunction() {
     var backgroundChoice = 0;
     console.log("backgroundChoice = " + backgroundChoice);
