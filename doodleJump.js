@@ -531,6 +531,7 @@ function start() {
     document.body.appendChild(scoreDiv);
 
     const scoreText = document.createElement("h");
+    scoreText.setAttribute("id","scoreTxt");
 
     var animate = function (time) {
 

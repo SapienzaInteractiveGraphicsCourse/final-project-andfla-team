@@ -157,6 +157,20 @@ img {
   height: 50px;
 }
 
+#score{
+  position:absolute;
+  top:10;
+  right:10;
+}
+
+#scoreTxt{
+  text-align: center;
+  font-weight: 800;
+  font-family: Stencil Std, fantasy;
+  font-size: 35px;
+  color: #F35A08; 
+}
+
 // For the menu
 .background-one {
   background-color: #151515;
