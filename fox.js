@@ -14,10 +14,6 @@ var gravityFall;
 var landing;
 var firstJumping;
 
-
-var simpleJumpValue = 15;
-var simpleFallValue = -30;
-
 var fromBending,toBending;
 var fromExtending,toExtending;
 var fromJumping,toJumping;

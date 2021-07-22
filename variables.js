@@ -36,6 +36,9 @@ var groupRotating;
 var groupFalling;
 var isFalling = false;
 
+var simpleJumpValue = 15;
+var simpleFallValue = -30;
+
 var jumpSound;
 var jumpSound1;
 var jumpSound2;
@@ -49,6 +52,7 @@ var boxPlatforms = [];
 var wall;
 var texLoader;
 var realPlatformMaterial;
+var prevHeight = 0;
 
 var backgroundChoice = 0;
 

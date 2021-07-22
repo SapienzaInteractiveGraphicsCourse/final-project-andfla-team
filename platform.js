@@ -21,7 +21,9 @@ const platform = {
 
     generate: function (visible_width, visible_height) {
         this.position.x = UTILS.generateRandomInt(-visible_width, +visible_width);
-        this.position.y = 6 * this.ID + visible_height/number;
+        //this.position.y = 6 * this.ID + visible_height/number;  //Same disance among platforms
+        this.position.y = prevHeight +  UTILS.generateRandomInt(1,simpleJumpValue);
+        prevHeight = this.position.y;
     }
 }
 
