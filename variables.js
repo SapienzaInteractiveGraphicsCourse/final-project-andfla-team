@@ -36,6 +36,11 @@ var groupRotating;
 var groupFalling;
 var isFalling = false;
 
+var jumpSound;
+var jumpSound1;
+var jumpSound2;
+var gameOverSound;
+var gameOpenerSound;
 
 var box;
 var foxBox;

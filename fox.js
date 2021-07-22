@@ -355,8 +355,10 @@ function collisionListener(fox) {
     scene.add(foxBox);
 
     foxBox.addEventListener("collision", function() {
-        if (isFalling)
+        if (isFalling){
+            jumpSound.play();
             jump(fox);
+        }
     });
 }
 

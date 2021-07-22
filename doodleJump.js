@@ -180,6 +180,14 @@ const loader = {
             foxGltf: "./resources/simple_fox/scene.gltf",
             robot: "./resources/robot/scene.gltf",
         },
+        sounds: {
+            jumpSnd: "./resources/sounds/jump.mp3" ,
+            jumpSnd1:"./resources/sounds/jump1.mp3",
+            jumpSnd2:"./resources/sounds/click.mp3",
+
+            gameOverSnd:"./resources/sounds/gameOver.mp3",
+            gameOpenerSnd:"./resources/sounds/gameOpener.mp3",
+        }
     },
 
     loadFox: function(scene) {
@@ -399,6 +407,25 @@ const loader = {
             drawPlatform(platformID);
         }
     },
+
+    loadSounds: function(scene){
+
+        jumpSound = new Audio(loader.assets.sounds.jumpSnd);
+        jumpSound.volume = 0.5;
+
+        jumpSound1 = new Audio(loader.assets.sounds.jumpSnd1);
+        jumpSound1.volume = 0.5;
+
+        jumpSound2 = new Audio(loader.assets.sounds.jumpSnd2);
+        jumpSound2.volume = 0.5;
+
+        gameOverSound = new Audio(loader.assets.sounds.gameOverSnd);
+        gameOverSound.volume = 0.5;
+
+        gameOpenerSound = new Audio(loader.assets.sounds.gameOpenerSnd);
+        gameOpenerSound.volume = 0.5;
+
+      },
 }
 
 function drawPlatform(platformID) {
@@ -523,6 +550,7 @@ function start() {
 
         // Initial jump
         if(fox.position.y + 1 <= 0){
+            gameOpenerSound.play();
             FOX.jump(fox);
         }
 
@@ -554,6 +582,10 @@ function start() {
 
         // Game over
         if( Math.abs(fox.position.y - camera.obj.position.y)  >= center_value + 6) {
+            //play game over sound
+            gameOverSound.play();
+
+            //remove tweens
             groupJumping.removeAll();
             groupLeft.removeAll();
             groupRight.removeAll();
@@ -604,6 +636,7 @@ function startGame() {
         loader.loadWall(scene);
         loader.loadGround(scene);
         loader.loadFox(scene);
+        loader.loadSounds();
 
         loader.onLoad = start;
 
