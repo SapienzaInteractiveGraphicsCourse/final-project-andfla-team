@@ -39,6 +39,7 @@ var isFalling = false;
 var simpleJumpValue = 15;
 var simpleFallValue = -30;
 
+var soundOn = true;
 var jumpSound;
 var jumpSound1;
 var jumpSound2;

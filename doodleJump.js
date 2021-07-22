@@ -550,7 +550,8 @@ function start() {
 
         // Initial jump
         if(fox.position.y + 1 <= 0){
-            gameOpenerSound.play();
+            if (soundOn)
+                gameOpenerSound.play();
             FOX.jump(fox);
         }
 
@@ -583,7 +584,8 @@ function start() {
         // Game over
         if( Math.abs(fox.position.y - camera.obj.position.y)  >= center_value + 6) {
             //play game over sound
-            gameOverSound.play();
+            if (soundOn)
+                gameOverSound.play();
 
             //remove tweens
             groupJumping.removeAll();
