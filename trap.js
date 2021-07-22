@@ -16,7 +16,7 @@ const trap_dic = {
 // Animations
 function move(trap) {
     moveOnX = new TWEEN.Tween(trap.position)
-        .to( {x: -10 + trap.position.x}, 1400)
+        .to( {x: -40 + trap.position.x}, 3000)
         .repeat(Infinity)
         .easing(TWEEN.Easing.Linear.None)
         .yoyo(true)
@@ -30,7 +30,7 @@ function rotate(trap){
     var toRotate = {
         y_leftRotation: (50 * Math.PI) / 180,
     };
-    
+
     rotateAroundY = new TWEEN.Tween(fromRotate)
         .to(toRotate ,100)
         .easing(TWEEN.Easing.Linear.None)
@@ -53,12 +53,9 @@ function collisionListener(trap) {
 
     trapBox.setCcdMotionThreshold(1);
     scene.add(trapBox);
-    
+
     trapBoxID = trapBox._physijs.id;
 
-    trapBox.addEventListener("collision", function() {
-        console.log("mi sta VENendo addosso");
-    });
 }
 
 function changeBoxPosition(trap) {

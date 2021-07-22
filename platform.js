@@ -19,10 +19,10 @@ const platform = {
 
     type: 0,
 
-    generate: function (visible_width, visible_height) {
+    generate: function (visible_width) {
         this.position.x = UTILS.generateRandomInt(-visible_width, +visible_width);
         //this.position.y = 6 * this.ID + visible_height/number;  //Same disance among platforms
-        this.position.y = prevHeight +  UTILS.generateRandomInt(1,simpleJumpValue);
+        this.position.y = prevHeight +  UTILS.generateRandomInt(1,simpleJumpValue/difficulty);
         prevHeight = this.position.y;
     }
 }

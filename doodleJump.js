@@ -186,9 +186,9 @@ const loader = {
             jumpSnd: "./resources/sounds/jump.mp3" ,
             jumpSnd1:"./resources/sounds/jump1.mp3",
             jumpSnd2:"./resources/sounds/click.mp3",
-            
+
             trapSnd:"./resources/sounds/trap_hit.mp3",
-            
+
             fallSnd1:"./resources/sounds/fall1.mp3",
             fallSnd2:"./resources/sounds/fall2.mp3",
 
@@ -270,14 +270,14 @@ const loader = {
         );
 
     },
-    
+
     loadTrap: function(scene) {
         var gltfLoader = new GLTFLoader(manager);
 
         gltfLoader.load(this.assets.objects.trapGltf, (gltf) => {
             trap = gltf.scene;
             trap.name = "trap";
-            trap.position.set(0, prevHeight+20, 0);            //TODO: change position
+            trap.position.set(20, prevHeight+20, 0);            //TODO: change position
             console.log("x prima: "+trap.position.x);
             trap.scale.set(2, 2, 1);
 
@@ -294,7 +294,7 @@ const loader = {
             trapRoot = trap.getObjectByName(TRAP.trap_dic.Root);
 
             scene.add(trap);
-            
+
             TRAP.collisionListener(trap);
             TRAP.changeBoxPosition(trap);
             TRAP.move(trap);
@@ -465,10 +465,10 @@ const loader = {
 
         jumpSound2 = new Audio(loader.assets.sounds.jumpSnd2);
         jumpSound2.volume = 0.5;
-        
+
         trapSound = new Audio(loader.assets.sounds.trapSnd);
         trapSound.volume = 0.5;
-        
+
         fallSound1 = new Audio(loader.assets.sounds.fallSnd1);
         fallSound1.volume = 0.5;
 
@@ -488,7 +488,7 @@ function drawPlatform(platformID) {
     var platformMaterial1;
 
     platform.ID = platformID;
-    platform.generate(camera.visible_width/4, 20);
+    platform.generate(camera.visible_width/4);
 
     var boxPlatform = PLATFORM.createBoxWithListener(platform);
 
@@ -611,17 +611,24 @@ function start() {
                 gameOpenerSound.play();
             FOX.jump(fox);
         }
-        
+
         FOX.changeBoxPosition(fox);
         TRAP.changeBoxPosition(trap);
-        
-        if (score == 35) {
+
+        //difficulty levels
+        if (score>=0 && score<=20)
+            difficulty = 2;   //easy
+        else if (score>20 && score<=40)
+            difficulty = 1.5; //medium
+        else
+          difficulty = 1.25;  //hard
+
+        if (score % 90 == 0) {
             trap.position.y = fox.position.y + 35;
-            trap.position.x = (fox.position.x + 40);
         }
 
         // Move camera if the fox pass half of the screen and generate new platform
-        let simpleJumpValue = 5;
+        let simpleJumpValue = 3;
         if(fox.position.y >= camera.obj.position.y) {
             camera.up(simpleJumpValue + fox.position.y);
 
@@ -630,13 +637,13 @@ function start() {
 
             platformID++;
             drawPlatform(platformID);
-            
-            
+
+
 /*            if (score>= 0 && score <= 200 && rand < difficulty_prob1)
                 trap.position.y = fox.position.y + 100;
             /*if (score >= 200 && rand < difficulty_prob2)
                 loader.loadTrap(scene);
-              */  
+              */
         }
 
         //Update score:
