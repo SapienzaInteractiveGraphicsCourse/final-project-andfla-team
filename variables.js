@@ -45,7 +45,7 @@ var simpleJumpValue = 15;
 var simpleFallValue = -30;
 
 // Sound
-var soundOn = true;
+var soundOn = false;
 var jumpSound;
 var jumpSound1;
 var jumpSound2;
@@ -61,9 +61,13 @@ var platforms = [];
 var boxPlatforms = [];
 var wall;
 var texLoader;
-var realPlatformMaterial;
-var prevHeight = 0;
 
+// Type of platform texture
+var realPlatformMaterial;
+var crashablePlatformMaterial;
+var woodPlatformMaterial;
+
+var prevHeight = 0;
 var backgroundChoice = 0;
 
 // Hardness

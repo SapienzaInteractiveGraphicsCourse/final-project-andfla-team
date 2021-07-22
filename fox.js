@@ -217,11 +217,11 @@ function jump(fox) {
   };
   fromJumping ={
       y:        toBending.y, //fox.position.y,
-      tail1:    tail1.rotation.z,
+      tail1:    (180 * Math.PI) / 180,
   }
   toJumping ={
       y:        fromJumping.y + simpleJumpValue,
-      tail1:    (180 * Math.PI) / 180,
+      tail1:    (160 * Math.PI) / 180,
   }
   fromFalling ={
       y:        toJumping.y,
@@ -229,7 +229,7 @@ function jump(fox) {
   }
   toFalling ={
       y:        fromFalling.y + simpleFallValue,
-      tail1:    (30 * Math.PI) / 180,
+      tail1:    (-180 * Math.PI) / 180,
   }
 
 //landing unused
@@ -340,7 +340,7 @@ function jump(fox) {
 
 // COLLISIONS FUNCTIONS
 function collisionListener(fox) {
-    var material = Physijs.createMaterial( new THREE.MeshStandardMaterial({side: THREE.DoubleSide, opacity: 0, transparent: true, depthWrite: false} ));
+    var material = Physijs.createMaterial( new THREE.MeshStandardMaterial({side: THREE.DoubleSide, transparent:true, opacity: 0, depthWrite: false} ));
 
     var foxGeometry = new THREE.BoxGeometry(2.7, 0.2, 2);
     foxBox = new Physijs.BoxMesh(foxGeometry, material, 50);

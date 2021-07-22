@@ -29,8 +29,15 @@ const platform = {
 
 // COLLISIONS FUNCTIONS
 function createBoxWithListener(platform) {
-
-    var material = Physijs.createMaterial(realPlatformMaterial);
+    var rand = UTILS.generateRandomInt(1,100);
+    var material;
+    
+    if (rand <= 80)
+        material = Physijs.createMaterial(realPlatformMaterial);
+    else if (rand > 80 && rand <= 90)
+        material = Physijs.createMaterial(crashablePlatformMaterial);
+    else if (rand > 90 && rand <= 100)
+        material = Physijs.createMaterial(woodPlatformMaterial);    
 
     var geometry = new THREE.BoxGeometry(6, 0.5, 4);
     var boxPlatform;

@@ -129,10 +129,13 @@ const loader = {
 
             platform2:        "./resources/legno_texture.jpg",
             platform2Normal:  "./resources/legno_normal.jpg",
+            platform2Roughness:  "./resources/legno_roughness.jpg",
 
-            platform3:        "./resources/piastrelle.jpg",
-
-            platform4:        "./resources/platform_white.jpg",
+            platformCr:             "./resources/crashable_texture.jpg",
+            platformCrNormal:   "./resources/crashable_normal.jpg",
+            platformCrRoughness:   "./resources/crashable_roughness.jpg",
+            platformCrMetal:   "./resources/crashable_metallic.jpg",
+            platformCrAlpha:   "./resources/crashable_alpha.jpg",
 
             wallLight:        "./resources/wall_light.jpg",
             wallLightNormal:           "./resources/wall_light_normal.jpg",
@@ -367,7 +370,7 @@ const loader = {
     },
 
     loadPlatform: function(scene) {
-        // Load firsts platforms
+        // Load platforms
         //Option1: Mattoncini con erba
         var texture = texLoader.load(loader.assets.textures.platform1);
         texture.magFilter = THREE.LinearFilter;
@@ -381,33 +384,39 @@ const loader = {
             .8, // high friction
             .3 // low restitution
         );
-/*
+  
         //Option2: wooden platforms
         var texture = texLoader.load(loader.assets.textures.platform2);
         texture.magFilter = THREE.LinearFilter;
         texture.minFilter = THREE.LinearMipmapLinearFilter;
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
-        realPlatformMaterial = new THREE.MeshStandardMaterial({
+        woodPlatformMaterial = new THREE.MeshStandardMaterial({
             map: texture,
-            normalMap: texLoader.load(loader.assets.textures.platform2Normal)},
+            normalMap: texLoader.load(loader.assets.textures.platform2Normal),
+            roughnessMap: texLoader.load(loader.assets.textures.platform2Roughness)
+            },
             .8, // high friction
             .3 // low restitution
         );
-*/
-/*
-        //Option3: Piastrelle
-        var texture = texLoader.load(loader.assets.textures.platform3);
+
+        //Option3: Crashable griglia
+        var texture = texLoader.load(loader.assets.textures.platformCr);
         texture.magFilter = THREE.LinearFilter;
         texture.minFilter = THREE.LinearMipmapLinearFilter;
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-
-        realPlatformMaterial = new THREE.MeshStandardMaterial({
-            map: texture},
+        
+        crashablePlatformMaterial = new THREE.MeshStandardMaterial({
+            map: texture,
+            normalMap: texLoader.load(loader.assets.textures.platformCrNormal),
+            roughnessMap: texLoader.load(loader.assets.textures.platformCrRoughness),
+            metalnessMap: texLoader.load(loader.assets.textures.platformCrMetal),
+            alphaMap: texLoader.load(loader.assets.textures.platformCrAlpha),
+            }
             //.8, // high friction
             //.3 // low restitution
         );
-*/
+
 
         for (platformID = 0; platformID < platforms.number; platformID++) {
             drawPlatform(platformID);
@@ -444,8 +453,6 @@ const loader = {
 }
 
 function drawPlatform(platformID) {
-    var platformMaterial1;
-
     platform.ID = platformID;
     platform.generate(camera.visible_width/4);
 
