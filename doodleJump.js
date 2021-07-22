@@ -583,6 +583,7 @@ function start() {
 
         // Game over
         if( Math.abs(fox.position.y - camera.obj.position.y)  >= center_value + 6) {
+            prevHeight=0;
             //play game over sound
             if (soundOn)
                 gameOverSound.play();

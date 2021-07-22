@@ -37,12 +37,10 @@
 
             function setAudio(){
                 soundOn = !soundOn;
-            
                 if (soundOn)
-                    document.getElementById("audioBtn").setAttribute("src","./resources/wall.jpg");
+                    document.getElementById("audioBtn").setAttribute("src","./resources/sound.png");
                 else
-                    document.getElementById("audioBtn").setAttribute("src","./resources/wall_light.jpg");
-                console.log("sound = " + soundOn);
+                    document.getElementById("audioBtn").setAttribute("src","./resources/mute.png");
             }
 
         </script>
@@ -71,7 +69,7 @@
             <div class="link-container">
                 <a id="background" class="link-one" href="#">Change Background</a>
                 <!--<button type="button" id="audioBtn">Audio</button>-->
-                <input type="image" id = "audioBtn" src="./resources/wall_light.jpg"/>
+                <input type="image" id = "audioBtn" src="./resources/sound.png"/>
             </div>
         </div>
 
