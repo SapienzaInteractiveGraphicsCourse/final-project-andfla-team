@@ -13,7 +13,7 @@
         <script type="module" src="./doodleJump.js"></script>
         <script type="module" src="./index.js"></script>
 
-	<script type="text/javascript" src="./bg.js"></script>
+	      <script type="text/javascript" src="./bg.js"></script>
 
         <script type="module">
             import {play} from "./index.js";
@@ -21,6 +21,7 @@
             document.getElementById("background").addEventListener("click", changeBg);
             document.getElementById("playGame").addEventListener("click", playGame);
             document.getElementById("about").addEventListener("click", about);
+            document.getElementById("audioBtn").addEventListener("click", setAudio);
 
             function playGame() {
                 play();
@@ -32,6 +33,16 @@
 
             function changeBg(){
                 window.location.href = 'background.html';
+            }
+
+            function setAudio(){
+                soundOn = !soundOn;
+            
+                if (soundOn)
+                    document.getElementById("audioBtn").setAttribute("src","./resources/wall.jpg");
+                else
+                    document.getElementById("audioBtn").setAttribute("src","./resources/wall_light.jpg");
+                console.log("sound = " + soundOn);
             }
 
         </script>
@@ -59,6 +70,8 @@
         <div class="background-one">
             <div class="link-container">
                 <a id="background" class="link-one" href="#">Change Background</a>
+                <!--<button type="button" id="audioBtn">Audio</button>-->
+                <input type="image" id = "audioBtn" src="./resources/wall_light.jpg"/>
             </div>
         </div>
 
