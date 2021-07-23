@@ -79,5 +79,7 @@ var backgroundChoice = 0;
 
 // Hardness
 var difficulty = 2;    //2 = easy, 1.5 = medium, 1.25 = hard
+var tReal = 70;
+var tCrashable = 80
 
 var score;

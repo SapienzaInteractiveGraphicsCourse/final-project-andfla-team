@@ -604,13 +604,22 @@ function start() {
         TRAP.changeBoxPosition(trap);
 
         //difficulty levels
-        if (score>=0 && score<=20)
+        if (score>=0 && score<=20){
             difficulty = 2;   //easy
-        else if (score>20 && score<=40)
+            //70% real,10% crashable,20% superjump
+            tReal = 70;
+            tCrashable = 80;
+        }else if (score>20 && score<=40){
             difficulty = 1.5; //medium
-        else
+            //60% real,20% crashable,20% superjump
+            tReal = 60;
+            tCrashable = 80;
+        }else{
             difficulty = 1.25;  //hard
-
+            //50 %real,40% crashable,10% superjump
+            tReal = 50;
+            tCrashable = 90;
+        }
         if (score % 90 == 0) {
             trap.position.y = fox.position.y + 35;
         }

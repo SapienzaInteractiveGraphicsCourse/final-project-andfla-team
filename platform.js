@@ -22,7 +22,7 @@ const platform = {
     generate: function (visible_width) {
         this.position.x = UTILS.generateRandomInt(-visible_width, +visible_width);
         //this.position.y = 6 * this.ID + visible_height/number;  //Same disance among platforms
-        this.position.y = prevHeight +  UTILS.generateRandomInt(1,simpleJumpValue/difficulty);
+        this.position.y = prevHeight +  UTILS.generateRandomInt(1,simpleJump/difficulty);
         prevHeight = this.position.y;
     }
 }
@@ -31,16 +31,16 @@ const platform = {
 function createBoxWithListener(platform) {
     var rand = UTILS.generateRandomInt(1,100);
     var material;
-    
+
     var geometry = new THREE.BoxGeometry(6, 0.5, 4);
-    
-    if (rand <= 80) {
+
+    if (rand <= tReal) {
         material = Physijs.createMaterial(realPlatformMaterial);
         geometry.name = "real";
-    } else if (rand > 80 && rand <= 90) {
+    } else if (rand > tReal && rand <= tCrashable) {
         material = Physijs.createMaterial(crashablePlatformMaterial);
-        geometry.name = "crashable";  
-    } else if (rand > 90 && rand <= 100) {
+        geometry.name = "crashable";
+    } else if (rand > tCrashable && rand <= 100) {
         material = Physijs.createMaterial(woodPlatformMaterial);
         geometry.name = "superjump";
     }
