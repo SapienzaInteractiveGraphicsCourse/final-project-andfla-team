@@ -8,7 +8,7 @@ import {platform} from './platform.js';
 import * as UTILS from './utils.js';
 import {gameOver} from './index.js';
 
-Physijs.scripts.worker = "../lib/physijs_worker.js";
+Physijs.scripts.worker = repository_name + "lib/physijs_worker.js";
 Physijs.scripts.ammo = "../ammo.js";
 
 

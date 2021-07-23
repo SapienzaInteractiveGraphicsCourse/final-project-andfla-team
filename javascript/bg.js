@@ -15,5 +15,5 @@ function choiceFunction() {
 
 
     var queryString = "?bg=" + backgroundChoice;
-    window.location.href = "./index.html" + queryString;
+    window.location.href = repository_name + "index.html" + queryString;
 }
