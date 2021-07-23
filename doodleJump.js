@@ -136,7 +136,7 @@ const loader = {
             platformCrRoughness:   "./resources/crashable_roughness.jpg",
             platformCrMetal:   "./resources/crashable_metallic.jpg",
             platformCrAlpha:   "./resources/crashable_alpha.jpg",
-            
+
             platformJump:             "./resources/superjump_height.jpg",
             platformJumpNormal:   "./resources/superjump_normal.jpg",
             platformJumpRoughness:   "./resources/superjump_roughness.jpg",
@@ -158,6 +158,11 @@ const loader = {
             jumpSnd: "./resources/sounds/jump.mp3" ,
             jumpSnd1:"./resources/sounds/jump1.mp3",
             jumpSnd2:"./resources/sounds/click.mp3",
+            superJumpSnd:"./resources/sounds/superJump.mp3",
+
+            breakGSnd:"./resources/sounds/breakG.mp3",
+            breakWSnd:"./resources/sounds/breakW.mp3",
+            fadingSnd:"./resources/sounds/fading.mp3",
 
             trapSnd:"./resources/sounds/trap_hit.mp3",
 
@@ -240,7 +245,7 @@ const loader = {
         );
 
     },
-    
+
     // Enemy
     loadTrap: function(scene) {
         var gltfLoader = new GLTFLoader(manager);
@@ -389,7 +394,7 @@ const loader = {
             .8, // high friction
             .3 // low restitution
         );
-  
+
         //Option2: wooden platforms
         var texture = texLoader.load(loader.assets.textures.platformJump);
         texture.magFilter = THREE.LinearFilter;
@@ -410,7 +415,7 @@ const loader = {
         texture.magFilter = THREE.LinearFilter;
         texture.minFilter = THREE.LinearMipmapLinearFilter;
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-        
+
         crashablePlatformMaterial = new THREE.MeshStandardMaterial({
             map: texture,
             normalMap: texLoader.load(loader.assets.textures.platformCrNormal),
@@ -427,7 +432,7 @@ const loader = {
             drawPlatform(platformID);
         }
     },
-    
+
     loadSounds: function(scene){
 
         jumpSound = new Audio(loader.assets.sounds.jumpSnd);
@@ -438,6 +443,18 @@ const loader = {
 
         jumpSound2 = new Audio(loader.assets.sounds.jumpSnd2);
         jumpSound2.volume = 0.5;
+
+        superJumpSound = new Audio(loader.assets.sounds.superJumpSnd);
+        superJumpSound.volume = 0.5;
+
+        breakGSound = new Audio(loader.assets.sounds.breakGSnd);
+        breakGSound.volume = 0.5;
+
+        breakWSound = new Audio(loader.assets.sounds.breakWSnd);
+        breakWSound.volume = 0.5;
+
+        fadingSound = new Audio(loader.assets.sounds.fadingSnd);
+        fadingSound.volume = 0.5;
 
         trapSound = new Audio(loader.assets.sounds.trapSnd);
         trapSound.volume = 0.5;
@@ -548,7 +565,6 @@ function start() {
     controls.target.set(0, 5, 0);
     controls.update();
 */
-
     let isFalling = false;
     let i = 0.1;
 
@@ -593,7 +609,7 @@ function start() {
         else if (score>20 && score<=40)
             difficulty = 1.5; //medium
         else
-          difficulty = 1.25;  //hard
+            difficulty = 1.25;  //hard
 
         if (score % 90 == 0) {
             trap.position.y = fox.position.y + 35;

@@ -320,7 +320,7 @@ function collisionListener(fox) {
             }
             fall(fox);
         }
-        
+
         if (other_object.geometry.name.localeCompare("real") == 0) {
             if (isFalling){
                 if (soundOn)
@@ -332,7 +332,7 @@ function collisionListener(fox) {
         } else if (other_object.geometry.name.localeCompare("crashable")  == 0) {
             if (isFalling){
                 if (soundOn)
-                    jumpSound1.play();
+                    fadingSound.play();
                 simpleJumpValue = simpleJump;
                 time = simpleTime;
                 jump(fox);
@@ -341,14 +341,14 @@ function collisionListener(fox) {
         } else if (other_object.geometry.name.localeCompare("superjump")  == 0) {
             if (isFalling){
                 if (soundOn)
-                    jumpSound1.play();
+                    superJumpSound.play();
                 simpleJumpValue = 2 * simpleJump;
                 time = 2 * simpleTime;
                 jump(fox);
             }
             console.log("mo ti faccio il superjump");
         }
-        
+
     });
 }
 

@@ -48,10 +48,14 @@ var simpleJumpValue = simpleJump;
 var simpleFallValue = -30;
 
 // Sound
-var soundOn = false;
+var soundOn = true;
 var jumpSound;
 var jumpSound1;
 var jumpSound2;
+var superJumpSound;
+var breakGSound;
+var breakWSound;
+var fadingSound;
 var trapSound;
 var fallSound1;
 var fallSound2;
