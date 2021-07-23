@@ -81,7 +81,7 @@ const lights = {
 
 // Background
 const backgroundAndFog = {
-    color: 0x00BFFF,        //0x00BFFF
+    color: 0x00BFFF,
     // Initializes the background and the fog
     init: function(scene) {
         scene.background = new THREE.Color(this.color);
