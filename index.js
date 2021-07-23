@@ -1,4 +1,4 @@
-import {startGame} from './doodleJump.js';
+import {startGame} from './foxyJumper.js';
 
 function play() {
     document.body.innerHTML = "";
@@ -24,7 +24,6 @@ function gameOver(score) {
     gameOverText.innerText = "GAME OVER \n FINAL SCORE: " + score;
     gameOverDiv.appendChild(gameOverText);
 
-    // TODO: sistemare
     const restart = document.createElement("button");
     restart.setAttribute("class", "button");
     restart.innerText = "Restart";
