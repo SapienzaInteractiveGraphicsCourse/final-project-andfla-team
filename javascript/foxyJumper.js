@@ -8,7 +8,7 @@ import {platform} from './platform.js';
 import * as UTILS from './utils.js';
 import {gameOver} from './index.js';
 
-Physijs.scripts.worker = "../lib/physijs_worker.js";
+Physijs.scripts.worker = "./lib/physijs_worker.js";
 Physijs.scripts.ammo = "../ammo.js";
 
 
@@ -117,22 +117,22 @@ const loader = {
 
     assets: {
         textures: {
-            wall:             "../resources/wall.jpg",
-            wallNormal:       "../resources/wall_normal.jpg",
+            wall:             "./resources/wall.jpg",
+            wallNormal:       "./resources/wall_normal.jpg",
 
-            ground:           "../resources/ground.jpg",
-            groundNormal:     "../resources/ground_normal.jpg",
+            ground:           "./resources/ground.jpg",
+            groundNormal:     "./resources/ground_normal.jpg",
 
-            platform1:        "../resources/platform_grass_block.jpg",
-            platform1Roughness:  "../resources/platform_grass_roughness.jpg",
+            platform1:        "./resources/platform_grass_block.jpg",
+            platform1Roughness:  "./resources/platform_grass_roughness.jpg",
 
-            platformCr:             "../resources/crashable_texture.jpg",
-            platformCrNormal:   "../resources/crashable_normal.jpg",
-            platformCrRoughness:   "../resources/crashable_roughness.jpg",
-            platformCrMetal:   "../resources/crashable_metallic.jpg",
-            platformCrAlpha:   "../resources/crashable_alpha.jpg",
+            platformCr:             "./resources/crashable_texture.jpg",
+            platformCrNormal:   "./resources/crashable_normal.jpg",
+            platformCrRoughness:   "./resources/crashable_roughness.jpg",
+            platformCrMetal:   "./resources/crashable_metallic.jpg",
+            platformCrAlpha:   "./resources/crashable_alpha.jpg",
 
-            platformJump:             "../resources/superjump_height.jpg",
+            platformJump:             "./resources/superjump_height.jpg",
             platformJumpNormal:   "../resources/superjump_normal.jpg",
             platformJumpRoughness:   "../resources/superjump_roughness.jpg",
 
