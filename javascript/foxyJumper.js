@@ -123,43 +123,43 @@ const loader = {
             ground:           repository_name + "resources/ground.jpg",
             groundNormal:     repository_name + "resources/ground_normal.jpg",
 
-            platform1:        "../resources/platform_grass_block.jpg",
-            platform1Roughness:  "../resources/platform_grass_roughness.jpg",
+            platform1:        repository_name + "resources/platform_grass_block.jpg",
+            platform1Roughness:  repository_name + "resources/platform_grass_roughness.jpg",
 
-            platformCr:             "../resources/crashable_texture.jpg",
-            platformCrNormal:   "../resources/crashable_normal.jpg",
-            platformCrRoughness:   "../resources/crashable_roughness.jpg",
-            platformCrMetal:   "../resources/crashable_metallic.jpg",
-            platformCrAlpha:   "../resources/crashable_alpha.jpg",
+            platformCr:             repository_name + "resources/crashable_texture.jpg",
+            platformCrNormal:   repository_name + "resources/crashable_normal.jpg",
+            platformCrRoughness:   repository_name + "resources/crashable_roughness.jpg",
+            platformCrMetal:   repository_name + "resources/crashable_metallic.jpg",
+            platformCrAlpha:   repository_name + "resources/crashable_alpha.jpg",
 
-            platformJump:             "../resources/superjump_height.jpg",
-            platformJumpNormal:   "../resources/superjump_normal.jpg",
-            platformJumpRoughness:   "../resources/superjump_roughness.jpg",
+            platformJump:             repository_name + "resources/superjump_height.jpg",
+            platformJumpNormal:   repository_name + "resources/superjump_normal.jpg",
+            platformJumpRoughness:   repository_name + "resources/superjump_roughness.jpg",
 
-            wallLight:                 "../resources/wall_light.jpg",
-            wallLightNormal:           "../resources/wall_light_normal.jpg",
-            wallLightRoughness:        "../resources/wall_light_roughness.jpg",
+            wallLight:                 repository_name + "resources/wall_light.jpg",
+            wallLightNormal:           repository_name + "resources/wall_light_normal.jpg",
+            wallLightRoughness:        repository_name + "resources/wall_light_roughness.jpg",
 
-            wall1:            "../resources/scraper_texture_1.jpg",
-            wall1Normal:      "../resources/scraper_normal_1.jpg",
-            wall1Roughness:   "../resources/scraper_roughness_1.jpg",
+            wall1:            repository_name + "resources/scraper_texture_1.jpg",
+            wall1Normal:      repository_name + "resources/scraper_normal_1.jpg",
+            wall1Roughness:   repository_name + "resources/scraper_roughness_1.jpg",
         },
         objects: {
-            foxGltf: "../resources/simple_fox/scene.gltf",
-            trapGltf: "../resources/trap/scene.gltf",
+            foxGltf: repository_name + "resources/simple_fox/scene.gltf",
+            trapGltf: repository_name + "resources/trap/scene.gltf",
         },
         sounds: {
-            jumpSnd1:"../resources/sounds/jump1.mp3",
-            superJumpSnd:"../resources/sounds/superJump.mp3",
+            jumpSnd1: repository_name + "resources/sounds/jump1.mp3",
+            superJumpSnd: repository_name + "resources/sounds/superJump.mp3",
 
-            vanishSnd:"../resources/sounds/vanish.mp3",
+            vanishSnd: repository_name + "resources/sounds/vanish.mp3",
 
-            trapSnd:"../resources/sounds/trap_hit.mp3",
+            trapSnd: repository_name + "resources/sounds/trap_hit.mp3",
 
-            fallSnd1:"../resources/sounds/fall1.mp3",
+            fallSnd1: repository_name + "resources/sounds/fall1.mp3",
 
-            gameOverSnd:"../resources/sounds/gameOver.mp3",
-            gameOpenerSnd:"../resources/sounds/gameOpener.mp3",
+            gameOverSnd: repository_name + "resources/sounds/gameOver.mp3",
+            gameOpenerSnd: repository_name + "resources/sounds/gameOpener.mp3",
         }
     },
 
