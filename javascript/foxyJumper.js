@@ -117,11 +117,11 @@ const loader = {
 
     assets: {
         textures: {
-            wall:             "../resources/wall.jpg",
-            wallNormal:       "../resources/wall_normal.jpg",
+            wall:             repository_name + "resources/wall.jpg",
+            wallNormal:       repository_name + "resources/wall_normal.jpg",
 
-            ground:           "../resources/ground.jpg",
-            groundNormal:     "../resources/ground_normal.jpg",
+            ground:           repository_name + "resources/ground.jpg",
+            groundNormal:     repository_name + "resources/ground_normal.jpg",
 
             platform1:        "../resources/platform_grass_block.jpg",
             platform1Roughness:  "../resources/platform_grass_roughness.jpg",
