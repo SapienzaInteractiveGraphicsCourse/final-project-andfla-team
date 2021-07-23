@@ -74,9 +74,7 @@ function moveRight(fox) {
 }
 
 
-
 function rotateBody(fox, direction){
-
     var fromLeft = {
         z_leftRotation: root.rotation.z,
         y_leftRotation: root.rotation.y,
@@ -149,141 +147,105 @@ function firstJump(fox) {
 }
 
 function jump(fox) {
+    fromBending = {
+        y:            fox.position.y,
+        rightUpperArm:rightUpperArm.rotation.z,
+        rightForeArm: rightForeArm.rotation.z,
+        rightHand:    rightHand.rotation.z,
+        leftUpperArm: leftUpperArm.rotation.z,
+        leftForeArm:  leftForeArm.rotation.z,
+        leftHand:     leftHand.rotation.z,
+        rightLeg1:    rightLeg1.rotation.z,
+        rightLeg2:    rightLeg2.rotation.z,
+        leftLeg1:     leftLeg1.rotation.z,
+        leftLeg2:     leftLeg2.rotation.z,
+        neck:         neck.rotation.z,
+    };
+    toBending = {
+        y:           fromBending.y,
+        rightUpperArm:  (-45 * Math.PI) / 180,
+        rightForeArm:   (-90 * Math.PI) / 180,
+        rightHand:      (90 * Math.PI) / 180,
 
-  fromBending = {
-    y:            fox.position.y,
-    rightUpperArm:rightUpperArm.rotation.z,
-    rightForeArm: rightForeArm.rotation.z,
-    rightHand:    rightHand.rotation.z,
-    leftUpperArm: leftUpperArm.rotation.z,
-    leftForeArm:  leftForeArm.rotation.z,
-    leftHand:     leftHand.rotation.z,
-    rightLeg1:    rightLeg1.rotation.z,
-    rightLeg2:    rightLeg2.rotation.z,
-    leftLeg1:     leftLeg1.rotation.z,
-    leftLeg2:     leftLeg2.rotation.z,
-    neck:         neck.rotation.z,
-  };
-  toBending = {
-    y:           fromBending.y,
-    rightUpperArm:  (-45 * Math.PI) / 180,
-    rightForeArm:   (-90 * Math.PI) / 180,
-    rightHand:      (90 * Math.PI) / 180,
+        leftUpperArm:   (-45 * Math.PI) / 180,
+        leftForeArm:    (-90 * Math.PI) / 180,
+        leftHand:       (90 * Math.PI) / 180,
 
-    leftUpperArm:   (-45 * Math.PI) / 180,
-    leftForeArm:    (-90 * Math.PI) / 180,
-    leftHand:       (90 * Math.PI) / 180,
+        rightLeg1:      (-120 * Math.PI) / 180,
+        rightLeg2:      (-90 * Math.PI) / 180,
 
-    rightLeg1:      (-120 * Math.PI) / 180,
-    rightLeg2:      (-90 * Math.PI) / 180,
+        leftLeg1:       (-120 * Math.PI) / 180,
+        leftLeg2:       (-90 * Math.PI) / 180,
 
-    leftLeg1:       (-120 * Math.PI) / 180,
-    leftLeg2:       (-90 * Math.PI) / 180,
+        neck:           (10 * Math.PI) / 180,
+    };
+    fromExtending = {
+        //  y:            root.position.y,
+        rightUpperArm:rightUpperArm.rotation.z,
+        rightForeArm: rightForeArm.rotation.z,
+        rightHand:    rightHand.rotation.z,
+        leftUpperArm: leftUpperArm.rotation.z,
+        leftForeArm:  leftForeArm.rotation.z,
+        leftHand:     leftHand.rotation.z,
+        rightLeg1:    rightLeg1.rotation.z,
+        rightLeg2:    rightLeg2.rotation.z,
+        leftLeg1:     leftLeg1.rotation.z,
+        leftLeg2:     leftLeg2.rotation.z,
+        neck:         neck.rotation.z,
+    };
+    toExtending = {
+        //root: -         5,
+        rightUpperArm:  fromBending.rightUpperArm,//(-75 * Math.PI) / 180,
+        rightForeArm:   fromBending.rightForeArm,//(-15 * Math.PI) / 180,
+        rightHand:      fromBending.rightHand,//(60 * Math.PI) / 180,
 
-    neck:           (10 * Math.PI) / 180,
-  };
-  fromExtending = {
+        leftUpperArm:   fromBending.leftUpperArm,//(-60 * Math.PI) / 180,
+        leftForeArm:    fromBending.leftForeArm,//(-30 * Math.PI) / 180,
+        leftHand:       fromBending.leftHand,//(15 * Math.PI) / 180,
 
-  //  y:            root.position.y,
-    rightUpperArm:rightUpperArm.rotation.z,
-    rightForeArm: rightForeArm.rotation.z,
-    rightHand:    rightHand.rotation.z,
-    leftUpperArm: leftUpperArm.rotation.z,
-    leftForeArm:  leftForeArm.rotation.z,
-    leftHand:     leftHand.rotation.z,
-    rightLeg1:    rightLeg1.rotation.z,
-    rightLeg2:    rightLeg2.rotation.z,
-    leftLeg1:     leftLeg1.rotation.z,
-    leftLeg2:     leftLeg2.rotation.z,
-    neck:         neck.rotation.z,
-  };
-  toExtending = {
-    //root: -         5,
-    rightUpperArm:  fromBending.rightUpperArm,//(-75 * Math.PI) / 180,
-    rightForeArm:   fromBending.rightForeArm,//(-15 * Math.PI) / 180,
-    rightHand:      fromBending.rightHand,//(60 * Math.PI) / 180,
+        rightLeg1:      fromBending.rightLeg1,//(-180 * Math.PI) / 180,
+        rightLeg2:      fromBending.rightLeg2,//(-30 * Math.PI) / 180,
 
-    leftUpperArm:   fromBending.leftUpperArm,//(-60 * Math.PI) / 180,
-    leftForeArm:    fromBending.leftForeArm,//(-30 * Math.PI) / 180,
-    leftHand:       fromBending.leftHand,//(15 * Math.PI) / 180,
+        leftLeg1:       fromBending.leftLeg1,//(-180 * Math.PI) / 180,
+        leftLeg2:       fromBending.leftLeg2,//(-30 * Math.PI) / 180,
 
-    rightLeg1:      fromBending.rightLeg1,//(-180 * Math.PI) / 180,
-    rightLeg2:      fromBending.rightLeg2,//(-30 * Math.PI) / 180,
-
-    leftLeg1:       fromBending.leftLeg1,//(-180 * Math.PI) / 180,
-    leftLeg2:       fromBending.leftLeg2,//(-30 * Math.PI) / 180,
-
-    neck:           fromBending.neck,//(30 * Math.PI) / 180,
-  };
-  fromJumping ={
-      y:        toBending.y, //fox.position.y,
-      tail1:    (180 * Math.PI) / 180,
-  }
-  toJumping ={
-      y:        fromJumping.y + simpleJumpValue,
-      tail1:    (160 * Math.PI) / 180,
-  }
-  fromFalling ={
-      y:        toJumping.y,
-      tail1:    toJumping.tail1,
-  }
-  toFalling ={
-      y:        fromFalling.y + simpleFallValue,
-      tail1:    (-180 * Math.PI) / 180,
-  }
-
-//landing unused
-  fromLanding ={
-      y:        toFalling.y,
-      rightUpperArm:rightUpperArm.rotation.z,
-      rightForeArm: rightForeArm.rotation.z,
-      rightHand:    rightHand.rotation.z,
-      leftUpperArm: leftUpperArm.rotation.z,
-      leftForeArm:  leftForeArm.rotation.z,
-      leftHand:     leftHand.rotation.z,
-      rightLeg1:    rightLeg1.rotation.z,
-      rightLeg2:    rightLeg2.rotation.z,
-      leftLeg1:     leftLeg1.rotation.z,
-      leftLeg2:     leftLeg2.rotation.z,
-      neck:         neck.rotation.z,
-  }
-  toLanding = {
-    y:           fromLanding.y-5,
-    rightUpperArm:  (-45 * Math.PI) / 180,
-    rightForeArm:   (-90 * Math.PI) / 180,
-    rightHand:      (90 * Math.PI) / 180,
-
-    leftUpperArm:   (-45 * Math.PI) / 180,
-    leftForeArm:    (-90 * Math.PI) / 180,
-    leftHand:       (90 * Math.PI) / 180,
-
-    rightLeg1:      (-120 * Math.PI) / 180,
-    rightLeg2:      (-90 * Math.PI) / 180,
-
-    leftLeg1:       (-120 * Math.PI) / 180,
-    leftLeg2:       (-90 * Math.PI) / 180,
-
-    neck:           (10 * Math.PI) / 180,
-  };
+        neck:           fromBending.neck,//(30 * Math.PI) / 180,
+    };
+    fromJumping ={
+        y:        toBending.y, //fox.position.y,
+        tail1:    (180 * Math.PI) / 180,
+    }
+    toJumping ={
+        y:        fromJumping.y + simpleJumpValue,
+        tail1:    (160 * Math.PI) / 180,
+    }
+    fromFalling ={
+        y:        toJumping.y,
+        tail1:    toJumping.tail1,
+    }
+    toFalling ={
+        y:        fromFalling.y + simpleFallValue,
+        tail1:    (-180 * Math.PI) / 180,
+    }
 
     bending = new TWEEN.Tween(fromBending, groupJumping)
         .to(toBending,100)
         .easing(TWEEN.Easing.Linear.None)
         .onUpdate(function () {
-          fox.position.y = fromBending.y;
-          rightUpperArm.rotation.z = fromBending.rightUpperArm;
-          rightForeArm.rotation.z = fromBending.rightForeArm;
-          rightHand.rotation.z = fromBending.rightHand;
-          leftUpperArm.rotation.z = fromBending.leftUpperArm;
-          leftForeArm.rotation.z = fromBending.leftForeArm;
-          leftHand.rotation.z = fromBending.leftHand;
-          rightLeg1.rotation.z = fromBending.rightLeg1;
-          rightLeg2.rotation.z = fromBending.rightLeg2;
-          leftLeg1.rotation.z = fromBending.leftLeg1;
-          leftLeg2.rotation.z = fromBending.leftLeg2;
-          neck.rotation.z = fromBending.neck;
+            fox.position.y = fromBending.y;
+            rightUpperArm.rotation.z = fromBending.rightUpperArm;
+            rightForeArm.rotation.z = fromBending.rightForeArm;
+            rightHand.rotation.z = fromBending.rightHand;
+            leftUpperArm.rotation.z = fromBending.leftUpperArm;
+            leftForeArm.rotation.z = fromBending.leftForeArm;
+            leftHand.rotation.z = fromBending.leftHand;
+            rightLeg1.rotation.z = fromBending.rightLeg1;
+            rightLeg2.rotation.z = fromBending.rightLeg2;
+            leftLeg1.rotation.z = fromBending.leftLeg1;
+            leftLeg2.rotation.z = fromBending.leftLeg2;
+            neck.rotation.z = fromBending.neck;
 
-          isFalling = false;
+            isFalling = false;
         })
         .start();
 
@@ -291,26 +253,26 @@ function jump(fox) {
         .to(toExtending,500)
         .easing(TWEEN.Easing.Linear.None)
         .onUpdate(function () {
-          rightUpperArm.rotation.z = fromExtending.rightUpperArm;
-          rightForeArm.rotation.z = fromExtending.rightForeArm;
-          rightHand.rotation.z = fromExtending.rightHand;
-          leftUpperArm.rotation.z = fromExtending.leftUpperArm;
-          leftForeArm.rotation.z = fromExtending.leftForeArm;
-          leftHand.rotation.z = fromExtending.leftHand;
-          rightLeg1.rotation.z = fromExtending.rightLeg1;
-          rightLeg2.rotation.z = fromExtending.rightLeg2;
-          leftLeg1.rotation.z = fromExtending.leftLeg1;
-          leftLeg2.rotation.z = fromExtending.leftLeg2;
-          neck.rotation.z = fromExtending.neck;
+            rightUpperArm.rotation.z = fromExtending.rightUpperArm;
+            rightForeArm.rotation.z = fromExtending.rightForeArm;
+            rightHand.rotation.z = fromExtending.rightHand;
+            leftUpperArm.rotation.z = fromExtending.leftUpperArm;
+            leftForeArm.rotation.z = fromExtending.leftForeArm;
+            leftHand.rotation.z = fromExtending.leftHand;
+            rightLeg1.rotation.z = fromExtending.rightLeg1;
+            rightLeg2.rotation.z = fromExtending.rightLeg2;
+            leftLeg1.rotation.z = fromExtending.leftLeg1;
+            leftLeg2.rotation.z = fromExtending.leftLeg2;
+            neck.rotation.z = fromExtending.neck;
 
-          isFalling = false;
+            isFalling = false;
         })
         //.delay(100)
         //.start();
 
     jumping = new TWEEN.Tween(fromJumping, groupJumping)
-        .to(toJumping, 1000) //{y: +simpleJumpValue + fox.position.y},toJumping
-        .easing(TWEEN.Easing.Linear.None)
+        .to(toJumping, time) //{y: +simpleJumpValue + fox.position.y},toJumping
+        .easing(TWEEN.Easing.Quadratic.Out)
         .onUpdate(function () {
             fox.position.y = fromJumping.y;
             tail1.rotation.z = fromJumping.tail1;
@@ -359,11 +321,34 @@ function collisionListener(fox) {
             fall(fox);
         }
         
-        if (isFalling){
-            if (soundOn)
-                jumpSound1.play();
-            jump(fox);
+        if (other_object.geometry.name.localeCompare("real") == 0) {
+            if (isFalling){
+                if (soundOn)
+                    jumpSound1.play();
+                simpleJumpValue = simpleJump;
+                time = simpleTime;
+                jump(fox);
+            }
+        } else if (other_object.geometry.name.localeCompare("crashable")  == 0) {
+            if (isFalling){
+                if (soundOn)
+                    jumpSound1.play();
+                simpleJumpValue = simpleJump;
+                time = simpleTime;
+                jump(fox);
+            }
+            console.log("io invece ti rompo il gradino");
+        } else if (other_object.geometry.name.localeCompare("superjump")  == 0) {
+            if (isFalling){
+                if (soundOn)
+                    jumpSound1.play();
+                simpleJumpValue = 2 * simpleJump;
+                time = 2 * simpleTime;
+                jump(fox);
+            }
+            console.log("mo ti faccio il superjump");
         }
+        
     });
 }
 

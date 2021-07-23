@@ -136,6 +136,11 @@ const loader = {
             platformCrRoughness:   "./resources/crashable_roughness.jpg",
             platformCrMetal:   "./resources/crashable_metallic.jpg",
             platformCrAlpha:   "./resources/crashable_alpha.jpg",
+            
+            platformJump:             "./resources/superjump_height.jpg",
+            platformJumpNormal:   "./resources/superjump_normal.jpg",
+            platformJumpRoughness:   "./resources/superjump_roughness.jpg",
+            //platformJumpMetal:   "./resources/superjump_metallic.jpg",
 
             wallLight:        "./resources/wall_light.jpg",
             wallLightNormal:           "./resources/wall_light_normal.jpg",
@@ -386,15 +391,15 @@ const loader = {
         );
   
         //Option2: wooden platforms
-        var texture = texLoader.load(loader.assets.textures.platform2);
+        var texture = texLoader.load(loader.assets.textures.platformJump);
         texture.magFilter = THREE.LinearFilter;
         texture.minFilter = THREE.LinearMipmapLinearFilter;
         texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
         woodPlatformMaterial = new THREE.MeshStandardMaterial({
             map: texture,
-            normalMap: texLoader.load(loader.assets.textures.platform2Normal),
-            roughnessMap: texLoader.load(loader.assets.textures.platform2Roughness)
+            normalMap: texLoader.load(loader.assets.textures.platformJumpNormal),
+            roughnessMap: texLoader.load(loader.assets.textures.platformJumpRoughness)
             },
             .8, // high friction
             .3 // low restitution

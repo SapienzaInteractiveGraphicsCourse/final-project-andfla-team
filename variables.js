@@ -41,7 +41,10 @@ var isFalling = false;
 var trapRoot;
 var trapBoxID;
 
-var simpleJumpValue = 15;
+var simpleJump = 15;
+var simpleTime = 1000;
+var time = simpleTime;
+var simpleJumpValue = simpleJump;
 var simpleFallValue = -30;
 
 // Sound

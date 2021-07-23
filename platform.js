@@ -32,14 +32,19 @@ function createBoxWithListener(platform) {
     var rand = UTILS.generateRandomInt(1,100);
     var material;
     
-    if (rand <= 80)
-        material = Physijs.createMaterial(realPlatformMaterial);
-    else if (rand > 80 && rand <= 90)
-        material = Physijs.createMaterial(crashablePlatformMaterial);
-    else if (rand > 90 && rand <= 100)
-        material = Physijs.createMaterial(woodPlatformMaterial);    
-
     var geometry = new THREE.BoxGeometry(6, 0.5, 4);
+    
+    if (rand <= 80) {
+        material = Physijs.createMaterial(realPlatformMaterial);
+        geometry.name = "real";
+    } else if (rand > 80 && rand <= 90) {
+        material = Physijs.createMaterial(crashablePlatformMaterial);
+        geometry.name = "crashable";  
+    } else if (rand > 90 && rand <= 100) {
+        material = Physijs.createMaterial(woodPlatformMaterial);
+        geometry.name = "superjump";
+    }
+
     var boxPlatform;
     boxPlatform = new Physijs.BoxMesh(geometry, material, 0);
     boxPlatform.position.set(platform.position.x, platform.position.y, platform.position.z);
