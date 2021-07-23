@@ -49,15 +49,11 @@ var simpleFallValue = -30;
 
 // Sound
 var soundOn = true;
-var jumpSound;
 var jumpSound1;
-var jumpSound2;
 var superJumpSound;
 var vanishSound;
-var fadingSound;
 var trapSound;
 var fallSound1;
-var fallSound2;
 var gameOverSound;
 var gameOpenerSound;
 

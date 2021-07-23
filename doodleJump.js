@@ -127,10 +127,6 @@ const loader = {
             platform1:        "./resources/platform_grass_block.jpg",
             platform1Roughness:  "./resources/platform_grass_roughness.jpg",
 
-            platform2:        "./resources/legno_texture.jpg",
-            platform2Normal:  "./resources/legno_normal.jpg",
-            platform2Roughness:  "./resources/legno_roughness.jpg",
-
             platformCr:             "./resources/crashable_texture.jpg",
             platformCrNormal:   "./resources/crashable_normal.jpg",
             platformCrRoughness:   "./resources/crashable_roughness.jpg",
@@ -154,18 +150,14 @@ const loader = {
             trapGltf: "./resources/trap/scene.gltf",
         },
         sounds: {
-            jumpSnd: "./resources/sounds/jump.mp3" ,
             jumpSnd1:"./resources/sounds/jump1.mp3",
-            jumpSnd2:"./resources/sounds/click.mp3",
             superJumpSnd:"./resources/sounds/superJump.mp3",
 
             vanishSnd:"./resources/sounds/vanish.mp3",
-            fadingSnd:"./resources/sounds/fading.mp3",
 
             trapSnd:"./resources/sounds/trap_hit.mp3",
 
             fallSnd1:"./resources/sounds/fall1.mp3",
-            fallSnd2:"./resources/sounds/fall2.mp3",
 
             gameOverSnd:"./resources/sounds/gameOver.mp3",
             gameOpenerSnd:"./resources/sounds/gameOpener.mp3",
@@ -346,7 +338,6 @@ const loader = {
                 var wallMaterial = new THREE.MeshStandardMaterial({
                     map: texture,
                     normalMap: texLoader.load(loader.assets.textures.wallNormal),
-                    //roughnessMap: texLoader.load(loader.assets.textures.wallRoughness),
                 });
                 wall = new THREE.Mesh(geometry, wallMaterial, 0);
                 scene.add(wall);
@@ -389,8 +380,8 @@ const loader = {
             map: texture,
             roughnessMap: texLoader.load(loader.assets.textures.platform1Roughness),
           },
-            .8, // high friction
-            .3 // low restitution
+            .8,
+            .3 
         );
 
         //Option2: wooden platforms
@@ -404,11 +395,11 @@ const loader = {
             normalMap: texLoader.load(loader.assets.textures.platformJumpNormal),
             roughnessMap: texLoader.load(loader.assets.textures.platformJumpRoughness)
             },
-            .8, // high friction
-            .3 // low restitution
+            .8,
+            .3
         );
 
-        //Option3: Crashable griglia
+        //Option3: Crashable 
         var texture = texLoader.load(loader.assets.textures.platformCr);
         texture.magFilter = THREE.LinearFilter;
         texture.minFilter = THREE.LinearMipmapLinearFilter;
@@ -421,8 +412,6 @@ const loader = {
             metalnessMap: texLoader.load(loader.assets.textures.platformCrMetal),
             alphaMap: texLoader.load(loader.assets.textures.platformCrAlpha),
             }
-            //.8, // high friction
-            //.3 // low restitution
         );
 
 
@@ -432,33 +421,20 @@ const loader = {
     },
 
     loadSounds: function(scene){
-
-        jumpSound = new Audio(loader.assets.sounds.jumpSnd);
-        jumpSound.volume = 0.5;
-
         jumpSound1 = new Audio(loader.assets.sounds.jumpSnd1);
         jumpSound1.volume = 0.5;
-
-        jumpSound2 = new Audio(loader.assets.sounds.jumpSnd2);
-        jumpSound2.volume = 0.5;
-
+        
         superJumpSound = new Audio(loader.assets.sounds.superJumpSnd);
         superJumpSound.volume = 0.5;
 
         vanishSound = new Audio(loader.assets.sounds.vanishSnd);
         vanishSound.volume = 0.5;
 
-        fadingSound = new Audio(loader.assets.sounds.fadingSnd);
-        fadingSound.volume = 0.5;
-
         trapSound = new Audio(loader.assets.sounds.trapSnd);
         trapSound.volume = 0.5;
 
         fallSound1 = new Audio(loader.assets.sounds.fallSnd1);
         fallSound1.volume = 0.5;
-
-        fallSound2 = new Audio(loader.assets.sounds.fallSnd2);
-        fallSound2.volume = 0.5;
 
         gameOverSound = new Audio(loader.assets.sounds.gameOverSnd);
         gameOverSound.volume = 0.5;
