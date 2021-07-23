@@ -34,7 +34,7 @@ function gameOver(score) {
     menuButt.setAttribute("class", "button");
     menuButt.innerText = "Go to menu";
     menuButt.onclick =  function() {
-        window.location.href = '../index.html'
+        window.location.href = repository_name + 'index.html';
     };
     gameOverDiv.appendChild(menuButt);
 }
