@@ -59,19 +59,13 @@ function createBoxWithListener(platform) {
     return boxPlatform;
 }
 
-function changeBoxPosition(boxPlatforms, platforms) {
-    for (var i = 0; i< platforms.length; i++) {
-        var boxPlatform = boxPlatforms[i];
-        var platform = platforms[i];
+function changeBoxPosition(boxPlatform) {
+    var platBoxPos = boxPlatform.position.clone();
+    boxPlatform.position.copy(platBoxPos);
+    boxPlatform.rotation.set(0, 0, 0);
+    boxPlatform.__dirtyPosition = true;
+    boxPlatform.__dirtyRotation = true;
 
-        boxPlatform.position.set( platform.position.x, platform.position.y, platform.position.z );
-
-        var platBoxPos = boxPlatform.position.clone();
-        boxPlatform.position.copy(platBoxPos);
-        boxPlatform.rotation.set(0, 0, 0);
-        boxPlatform.__dirtyPosition = true;
-        boxPlatform.__dirtyRotation = true;
-    }
 }
 
 export {platform, changeBoxPosition, createBoxWithListener};

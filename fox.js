@@ -332,12 +332,12 @@ function collisionListener(fox) {
         } else if (other_object.geometry.name.localeCompare("crashable")  == 0) {
             if (isFalling){
                 if (soundOn)
-                    fadingSound.play();
+                    vanishSound.play();
                 simpleJumpValue = simpleJump;
                 time = simpleTime;
                 jump(fox);
+                scene.remove(other_object);
             }
-            console.log("io invece ti rompo il gradino");
         } else if (other_object.geometry.name.localeCompare("superjump")  == 0) {
             if (isFalling){
                 if (soundOn)
@@ -346,7 +346,6 @@ function collisionListener(fox) {
                 time = 2 * simpleTime;
                 jump(fox);
             }
-            console.log("mo ti faccio il superjump");
         }
 
     });

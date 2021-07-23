@@ -140,9 +140,8 @@ const loader = {
             platformJump:             "./resources/superjump_height.jpg",
             platformJumpNormal:   "./resources/superjump_normal.jpg",
             platformJumpRoughness:   "./resources/superjump_roughness.jpg",
-            //platformJumpMetal:   "./resources/superjump_metallic.jpg",
 
-            wallLight:        "./resources/wall_light.jpg",
+            wallLight:                 "./resources/wall_light.jpg",
             wallLightNormal:           "./resources/wall_light_normal.jpg",
             wallLightRoughness:        "./resources/wall_light_roughness.jpg",
 
@@ -160,8 +159,7 @@ const loader = {
             jumpSnd2:"./resources/sounds/click.mp3",
             superJumpSnd:"./resources/sounds/superJump.mp3",
 
-            breakGSnd:"./resources/sounds/breakG.mp3",
-            breakWSnd:"./resources/sounds/breakW.mp3",
+            vanishSnd:"./resources/sounds/vanish.mp3",
             fadingSnd:"./resources/sounds/fading.mp3",
 
             trapSnd:"./resources/sounds/trap_hit.mp3",
@@ -447,11 +445,8 @@ const loader = {
         superJumpSound = new Audio(loader.assets.sounds.superJumpSnd);
         superJumpSound.volume = 0.5;
 
-        breakGSound = new Audio(loader.assets.sounds.breakGSnd);
-        breakGSound.volume = 0.5;
-
-        breakWSound = new Audio(loader.assets.sounds.breakWSnd);
-        breakWSound.volume = 0.5;
+        vanishSound = new Audio(loader.assets.sounds.vanishSnd);
+        vanishSound.volume = 0.5;
 
         fadingSound = new Audio(loader.assets.sounds.fadingSnd);
         fadingSound.volume = 0.5;
@@ -479,7 +474,7 @@ function drawPlatform(platformID) {
     platform.generate(camera.visible_width/4);
 
     var boxPlatform = PLATFORM.createBoxWithListener(platform);
-
+    
     platforms[platformID] = platform;
     boxPlatforms[platformID] = boxPlatform;
 }
