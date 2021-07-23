@@ -120,10 +120,10 @@ const loader = {
             wall:             repository_name + "resources/wall.jpg",
             wallNormal:       repository_name + "resources/wall_normal.jpg",
 
-            ground:           "resources/ground.jpg",
+            ground:           repository_name + "resources/ground.jpg",
             groundNormal:     repository_name + "resources/ground_normal.jpg",
 
-            platform1:        "final-project-andfla-team/resources/platform_grass_block.jpg",
+            platform1:        repository_name + "resources/platform_grass_block.jpg",
             platform1Roughness:  repository_name + "resources/platform_grass_roughness.jpg",
 
             platformCr:             repository_name + "resources/crashable_texture.jpg",
@@ -140,7 +140,7 @@ const loader = {
             wallLightNormal:           repository_name + "resources/wall_light_normal.jpg",
             wallLightRoughness:        repository_name + "resources/wall_light_roughness.jpg",
 
-            wall1:            "/final-project-andfla-team/resources/scraper_texture_1.jpg",
+            wall1:            repository_name + "resources/scraper_texture_1.jpg",
             wall1Normal:      repository_name + "resources/scraper_normal_1.jpg",
             wall1Roughness:   repository_name + "resources/scraper_roughness_1.jpg",
         },
