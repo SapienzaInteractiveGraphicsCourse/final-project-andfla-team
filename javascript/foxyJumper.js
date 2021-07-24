@@ -281,7 +281,7 @@ const loader = {
             texture = texLoader.load( this.assets.textures.wall1, function ( texture ) {
                 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
                 texture.offset.set( 0, 0 );
-                texture.repeat.set( 4, 700 );//700 per wall1, 600 per le altre
+                texture.repeat.set( 4, 700 );
                 texture.magFilter = THREE.LinearFilter;
                 texture.minFilter = THREE.NearestMipmapLinearFilter;
 
@@ -304,7 +304,7 @@ const loader = {
             texture = texLoader.load( this.assets.textures.wallLight, function ( texture ) {
                   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
                   texture.offset.set( 0, 0 );
-                  texture.repeat.set( 5, 1500 );//700 per wall1, 600 per le altre
+                  texture.repeat.set( 5, 1500 );
                   texture.magFilter = THREE.LinearFilter;
                   texture.minFilter = THREE.NearestMipmapLinearFilter;
 
@@ -313,7 +313,6 @@ const loader = {
 
                   var wallMaterial = new THREE.MeshStandardMaterial({
                       map: texture,
-                      //normalMap: texLoader.load(loader.assets.textures.wallLightNormal),
                       roughnessMap: texLoader.load(loader.assets.textures.wallLightRoughness),
                   });
                   wall = new THREE.Mesh(geometry, wallMaterial, 0);
@@ -326,7 +325,7 @@ const loader = {
             texture = texLoader.load( this.assets.textures.wall, function ( texture ) {
                 texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
                 texture.offset.set( 0, 0 );
-                texture.repeat.set( 5, 1500 );//700 per wall1, 600 per le altre
+                texture.repeat.set( 5, 1500 );
                 texture.magFilter = THREE.LinearFilter;
                 texture.minFilter = THREE.NearestMipmapLinearFilter;
 
@@ -368,7 +367,7 @@ const loader = {
 
     loadPlatform: function(scene) {
         // Load platforms
-        //Option1: Mattoncini con erba
+        //Real platforms
         var texture = texLoader.load(loader.assets.textures.platform1);
         texture.magFilter = THREE.LinearFilter;
         texture.minFilter = THREE.LinearMipmapLinearFilter;
@@ -382,7 +381,7 @@ const loader = {
             .3
         );
 
-        //Option2: wooden platforms
+        //superJump platform
         var texture = texLoader.load(loader.assets.textures.platformJump);
         texture.magFilter = THREE.LinearFilter;
         texture.minFilter = THREE.LinearMipmapLinearFilter;
@@ -397,7 +396,7 @@ const loader = {
             .3
         );
 
-        //Option3: Crashable
+        //Crashable
         var texture = texLoader.load(loader.assets.textures.platformCr);
         texture.magFilter = THREE.LinearFilter;
         texture.minFilter = THREE.LinearMipmapLinearFilter;
