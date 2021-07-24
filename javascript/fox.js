@@ -12,13 +12,11 @@ var extending;
 var bending;
 var gravityFall;
 var landing;
-var firstJumping;
 
 var fromBending,toBending;
 var fromExtending,toExtending;
 var fromJumping,toJumping;
 var fromFalling,toFalling;
-var fromLanding,toLanding;
 
 var foxBox;
 
@@ -126,24 +124,6 @@ function fall(fox) {
 // Stops the falling animation
 function stopFallAnimation() {
     gravityFall.stop();
-}
-
-function firstJump(fox) {
-    firstJumping = new TWEEN.Tween(fox.position)
-        .to({y: +simpleJumpValue + fox.position.y}, 600)
-        .easing(TWEEN.Easing.Quadratic.Out)
-        .onUpdate(function () {
-            isFalling=false;
-            })
-        .start();
-
-    var firstFalling = new TWEEN.Tween(fox.position)
-        .to({y: -simpleJumpValue + fox.position.y}, 600)
-        .easing(TWEEN.Easing.Quadratic.In)
-        .onUpdate(function () {
-            isFalling=true; })
-
-    firstJumping.chain(firstFalling);
 }
 
 function jump(fox) {
@@ -361,4 +341,4 @@ function changeBoxPosition(fox) {
     foxBox.__dirtyRotation = true;
 }
 
-export{fox_dic, moveLeft, moveRight, rotateBody, jump, fall, stopFallAnimation, firstJump, collisionListener, changeBoxPosition}
+export{fox_dic, moveLeft, moveRight, rotateBody, jump, fall, stopFallAnimation, collisionListener, changeBoxPosition}
