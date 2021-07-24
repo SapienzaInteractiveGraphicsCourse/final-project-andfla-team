@@ -354,7 +354,6 @@ const loader = {
             texture.repeat.set( 9, 9 );
 
             const geometry = new THREE.PlaneGeometry( window.innerWidth / 2, window.innerHeight );
-
             var groundMaterial = new THREE.MeshStandardMaterial({
                 map: texture
             });
